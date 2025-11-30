@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel do Aluno - E.E Florentino Arnaldo Coelho</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="../../assets/css/aluno.css">
+</head>
+
+<body>
+    <div id="dashboard" class="dashboard-container">
+        <!-- Navbar Superior -->
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark rounded-top mt-3 shadow-sm">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#" style="display: flex; align-items: center;">
+                    <i class="fas fa-user-graduate me-2"></i>
+                    Painel do Aluno
+                </a>
+                <button class="btn btn-outline-light" id="logout-btn">
+                    <a href="../../index.html" style="color: white; text-decoration: none;">
+                        <i class="fas fa-sign-out-alt me-1"></i> Sair
+                    </a>
+                </button>
+            </div>
+        </nav>
+
+        <!-- Container Principal com Abas -->
+        <div class="container-fluid bg-white p-4 p-md-5 rounded-bottom shadow-lg mb-5">
+            <!-- Informações do Aluno -->
+            <div class="row mb-4">
+                <div class="col-12">
+                    <div class="card shadow-sm mb-4 aluno-info-card">
+                        <div class="card-body">
+                            <div class="row align-items-center">
+                                <div class="col-md-8">
+                                    <h3 class="mb-2" id="aluno-nome">Carregando...</h3>
+                                    <p class="text-muted mb-1"><i class="fas fa-id-card me-2"></i>Matrícula: <span id="aluno-matricula">-</span></p>
+                                    <p class="text-muted mb-1"><i class="fas fa-users me-2"></i>Turma: <span id="aluno-turma">-</span></p>
+                                    <p class="text-muted mb-1"><i class="fas fa-calendar-alt me-2"></i>Ano Letivo: <span id="aluno-ano-letivo">-</span></p>
+                                    <p class="text-muted mb-0"><i class="fas fa-birthday-cake me-2"></i>Data de Nascimento: <span id="aluno-nascimento">-</span></p>
+                                </div>
+                                <div class="col-md-4 text-end">
+                                    <div class="stat-box media-geral-box">
+                                        <div class="stat-number" id="media-geral">0.0</div>
+                                        <div class="stat-label">Média Geral</div>
+                                        <div class="stat-badge" id="situacao-geral">-</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Cards de Estatísticas Rápidas -->
+            <div class="row mb-4">
+                <div class="col-md-3 col-sm-6 mb-3">
+                    <div class="stat-card-mini">
+                        <div class="stat-icon" style="background-color: #28a745;">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-number-mini" id="disciplinas-aprovadas">0</div>
+                            <div class="stat-label-mini">Aprovado</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-6 mb-3">
+                    <div class="stat-card-mini">
+                        <div class="stat-icon" style="background-color: #ffc107;">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-number-mini" id="disciplinas-recuperacao">0</div>
+                            <div class="stat-label-mini">Recuperação</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-6 mb-3">
+                    <div class="stat-card-mini">
+                        <div class="stat-icon" style="background-color: #dc3545;">
+                            <i class="fas fa-times-circle"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-number-mini" id="disciplinas-reprovadas">0</div>
+                            <div class="stat-label-mini">Reprovado</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-6 mb-3">
+                    <div class="stat-card-mini">
+                        <div class="stat-icon" style="background-color: #17a2b8;">
+                            <i class="fas fa-book"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-number-mini" id="total-disciplinas">0</div>
+                            <div class="stat-label-mini">Disciplinas</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ABAS DE NAVEGAÇÃO -->
+            <ul class="nav nav-tabs mb-4" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="notas-tab" data-bs-toggle="tab"
+                        data-bs-target="#notas-panel" type="button" role="tab">
+                        <i class="fas fa-clipboard-list me-1"></i> Minhas Notas
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="desempenho-tab" data-bs-toggle="tab" data-bs-target="#desempenho-panel"
+                        type="button" role="tab">
+                        <i class="fas fa-chart-line me-1"></i> Desempenho
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="calendario-tab" data-bs-toggle="tab" data-bs-target="#calendario-panel"
+                        type="button" role="tab">
+                        <i class="fas fa-calendar-alt me-1"></i> Calendário
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="historico-tab" data-bs-toggle="tab" data-bs-target="#historico-panel"
+                        type="button" role="tab">
+                        <i class="fas fa-history me-1"></i> Histórico
+                    </button>
+                </li>
+            </ul>
+
+            <!-- CONTEÚDO DAS ABAS -->
+            <div class="tab-content">
+                <!-- PAINEL: Minhas Notas -->
+                <div class="tab-pane fade show active" id="notas-panel" role="tabpanel">
+                    <div class="mb-4">
+                        <h3 class="mb-1">Minhas Notas</h3>
+                        <p class="text-muted mb-0">Visualize suas notas por disciplina e bimestre</p>
+                    </div>
+
+                    <div class="row mb-4">
+                        <div class="col-md-6 mb-3">
+                            <label for="select-bimestre-notas" class="form-label fw-bold">
+                                <i class="fas fa-calendar-alt me-2"></i>Bimestre
+                            </label>
+                            <select class="form-select" id="select-bimestre-notas">
+                                <option value="">Todos os bimestres</option>
+                                <option value="1">1º Bimestre</option>
+                                <option value="2">2º Bimestre</option>
+                                <option value="3">3º Bimestre</option>
+                                <option value="4">4º Bimestre</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="select-disciplina-notas" class="form-label fw-bold">
+                                <i class="fas fa-book me-2"></i>Disciplina
+                            </label>
+                            <select class="form-select" id="select-disciplina-notas">
+                                <option value="">Todas as disciplinas</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div id="notas-container" style="display: none;">
+                        <div class="card shadow-sm">
+                            <div class="card-header bg-primary text-white">
+                                <h5 class="mb-0"><i class="fas fa-clipboard-list me-2"></i>Notas por Disciplina</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-hover align-middle">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th>Disciplina</th>
+                                                <th>Bimestre</th>
+                                                <th>Nota 1</th>
+                                                <th>Nota 2</th>
+                                                <th>Nota 3</th>
+                                                <th>Média</th>
+                                                <th>Situação</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="tbody-notas">
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="notas-vazio" class="text-center py-5" style="display: none;">
+                        <i class="fas fa-clipboard-list fa-3x text-muted mb-3"></i>
+                        <h4 class="text-muted">Nenhuma nota encontrada.</h4>
+                        <p class="text-muted">Suas notas aparecerão aqui quando forem lançadas pelos professores.</p>
+                    </div>
+
+                    <div id="notas-loading" class="text-center py-5">
+                        <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;">
+                            <span class="visually-hidden">Carregando...</span>
+                        </div>
+                        <p class="text-muted mt-2">Carregando notas...</p>
+                    </div>
+                </div>
+
+                <!-- PAINEL: Desempenho -->
+                <div class="tab-pane fade" id="desempenho-panel" role="tabpanel">
+                    <div class="mb-4">
+                        <h3 class="mb-1">Meu Desempenho</h3>
+                        <p class="text-muted mb-0">Acompanhe sua evolução ao longo do ano letivo</p>
+                    </div>
+
+                    <div class="row mb-4">
+                        <div class="col-lg-6 mb-4">
+                            <div class="card shadow-sm h-100">
+                                <div class="card-header bg-transparent py-3">
+                                    <h6 class="m-0 fw-bold text-primary">
+                                        <i class="fas fa-chart-bar me-2"></i>Médias por Disciplina
+                                    </h6>
+                                </div>
+                                <div class="card-body" style="min-height: 300px;">
+                                    <canvas id="mediasDisciplinasChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6 mb-4">
+                            <div class="card shadow-sm h-100">
+                                <div class="card-header bg-transparent py-3">
+                                    <h6 class="m-0 fw-bold text-primary">
+                                        <i class="fas fa-chart-line me-2"></i>Evolução ao Longo do Ano
+                                    </h6>
+                                </div>
+                                <div class="card-body" style="min-height: 300px;">
+                                    <canvas id="evolucaoNotasChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card shadow-sm">
+                                <div class="card-header bg-transparent py-3">
+                                    <h6 class="m-0 fw-bold text-primary">
+                                        <i class="fas fa-trophy me-2"></i>Ranking de Disciplinas
+                                    </h6>
+                                </div>
+                                <div class="card-body">
+                                    <div id="ranking-disciplinas" class="row">
+                                        <!-- Será preenchido pelo JavaScript -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PAINEL: Calendário -->
+                <div class="tab-pane fade" id="calendario-panel" role="tabpanel">
+                    <div class="mb-4">
+                        <h3 class="mb-1">Calendário Escolar</h3>
+                        <p class="text-muted mb-0">Acompanhe os eventos e atividades da escola</p>
+                    </div>
+
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+                            <div id="calendario-aluno"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PAINEL: Histórico -->
+                <div class="tab-pane fade" id="historico-panel" role="tabpanel">
+                    <div class="mb-4">
+                        <h3 class="mb-1">Histórico Completo</h3>
+                        <p class="text-muted mb-0">Visualize todas as suas notas de forma detalhada</p>
+                    </div>
+
+                    <div class="card shadow-sm">
+                        <div class="card-header bg-info text-white">
+                            <h5 class="mb-0"><i class="fas fa-history me-2"></i>Histórico de Notas</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-hover align-middle">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>Disciplina</th>
+                                            <th>Bimestre</th>
+                                            <th>Nota 1</th>
+                                            <th>Nota 2</th>
+                                            <th>Nota 3</th>
+                                            <th>Média</th>
+                                            <th>Situação</th>
+                                            <th>Data</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="tbody-historico">
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="historico-vazio" class="text-center py-5" style="display: none;">
+                        <i class="fas fa-history fa-3x text-muted mb-3"></i>
+                        <h4 class="text-muted">Nenhum histórico encontrado.</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/js/all.min.js"></script>
+    
+    <!-- Chart.js (para os gráficos) -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- FullCalendar -->
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/locales/pt-br.global.min.js"></script>
+    <script src="../../assets/scripts/auth.js"></script>
+    <script src="../../assets/scripts/aluno.js"></script>
+    
+    <!-- Modal de Troca de Senha -->
+    <div class="modal fade" id="modalTrocarSenha" tabindex="-1" aria-labelledby="modalTrocarSenhaLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-warning">
+                    <h5 class="modal-title" id="modalTrocarSenhaLabel">
+                        <i class="fas fa-exclamation-triangle me-2"></i>Trocar Senha Obrigatória
+                    </h5>
+                </div>
+                <div class="modal-body">
+                    <div class="alert alert-warning">
+                        <i class="fas fa-info-circle me-2"></i>
+                        <strong>Importante:</strong> Esta é sua primeira vez fazendo login. Por segurança, você precisa trocar sua senha inicial.
+                    </div>
+                    <form id="form-trocar-senha">
+                        <div class="mb-3">
+                            <label for="senha-atual" class="form-label">Senha Atual</label>
+                            <input type="password" class="form-control" id="senha-atual" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="nova-senha" class="form-label">Nova Senha <span class="text-danger">*</span></label>
+                            <input type="password" class="form-control" id="nova-senha" minlength="6" required>
+                            <small class="form-text text-muted">A senha deve ter no mínimo 6 caracteres</small>
+                        </div>
+                        <div class="mb-3">
+                            <label for="confirmar-nova-senha" class="form-label">Confirmar Nova Senha <span class="text-danger">*</span></label>
+                            <input type="password" class="form-control" id="confirmar-nova-senha" minlength="6" required>
+                        </div>
+                        <div id="trocar-senha-message" class="alert" style="display: none;"></div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="btn-salvar-senha">
+                        <i class="fas fa-save me-2"></i>Salvar Nova Senha
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Botão de logout
+        document.getElementById('logout-btn').addEventListener('click', function(e) {
+            e.preventDefault();
+            if (typeof fazerLogout === 'function') {
+                fazerLogout();
+            } else {
+                localStorage.clear();
+                window.location.href = '../../index.html';
+            }
+        });
+
+        // Verificar se precisa trocar senha
+        document.addEventListener('DOMContentLoaded', function() {
+            const precisaTrocarSenha = localStorage.getItem('precisaTrocarSenha') === 'true';
+            
+            if (precisaTrocarSenha) {
+                const modalTrocarSenha = new bootstrap.Modal(document.getElementById('modalTrocarSenha'));
+                modalTrocarSenha.show();
+            }
+
+            // Botão salvar nova senha
+            document.getElementById('btn-salvar-senha').addEventListener('click', async function() {
+                const senhaAtual = document.getElementById('senha-atual').value;
+                const novaSenha = document.getElementById('nova-senha').value;
+                const confirmarSenha = document.getElementById('confirmar-nova-senha').value;
+                const messageDiv = document.getElementById('trocar-senha-message');
+                
+                messageDiv.style.display = 'none';
+
+                // Validações
+                if (novaSenha.length < 6) {
+                    mostrarMensagemTrocarSenha('A nova senha deve ter no mínimo 6 caracteres!', 'danger');
+                    return;
+                }
+
+                if (novaSenha !== confirmarSenha) {
+                    mostrarMensagemTrocarSenha('As senhas não coincidem!', 'danger');
+                    return;
+                }
+
+                // Obter dados do usuário
+                const usuarioData = JSON.parse(localStorage.getItem('usuarioData'));
+                const usuarioId = localStorage.getItem('usuarioId');
+                const tipoUsuario = localStorage.getItem('tipoUsuario');
+
+                // Verificar senha atual usando a mesma função do login
+                const senhaValida = validarSenha(senhaAtual, usuarioData.dataNascimento, usuarioData.senha);
+                if (!senhaValida) {
+                    mostrarMensagemTrocarSenha('Senha atual incorreta!', 'danger');
+                    return;
+                }
+
+                try {
+                    const endpoint = tipoUsuario === 'aluno' ? 'alunos' : 'professores';
+                    const response = await fetch(`http://localhost:3000/${endpoint}/${usuarioId}`, {
+                        method: 'PATCH',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            senha: novaSenha,
+                            senhaTrocada: true
+                        })
+                    });
+
+                    if (response.ok) {
+                        mostrarMensagemTrocarSenha('Senha alterada com sucesso!', 'success');
+                        localStorage.setItem('precisaTrocarSenha', 'false');
+                        
+                        // Atualizar dados no localStorage
+                        usuarioData.senha = novaSenha;
+                        usuarioData.senhaTrocada = true;
+                        localStorage.setItem('usuarioData', JSON.stringify(usuarioData));
+                        
+                        setTimeout(() => {
+                            bootstrap.Modal.getInstance(document.getElementById('modalTrocarSenha')).hide();
+                            document.getElementById('form-trocar-senha').reset();
+                        }, 1500);
+                    } else {
+                        mostrarMensagemTrocarSenha('Erro ao alterar senha. Tente novamente.', 'danger');
+                    }
+                } catch (error) {
+                    console.error('Erro ao trocar senha:', error);
+                    mostrarMensagemTrocarSenha('Erro ao alterar senha. Tente novamente.', 'danger');
+                }
+            });
+
+            function mostrarMensagemTrocarSenha(mensagem, tipo) {
+                const messageDiv = document.getElementById('trocar-senha-message');
+                messageDiv.className = `alert alert-${tipo}`;
+                messageDiv.textContent = mensagem;
+                messageDiv.style.display = 'block';
+            }
+        });
+    </script>
+</body>
+
+</html>
+

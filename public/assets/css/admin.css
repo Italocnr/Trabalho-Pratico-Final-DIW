@@ -1,0 +1,338 @@
+body {
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f8f9fa;
+}
+
+
+/* Dashboard */
+.dashboard-container {
+    min-height: 100vh;
+    background-color: #f8f9fa;
+    max-width: 1400px; /* Adicionado para centralizar o layout */
+    margin: auto;
+}
+
+.navbar {
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-brand {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: white !important;
+}
+
+.nav-tabs {
+    border-bottom: 3px solid #e0e0e0;
+    margin-bottom: 2rem;
+}
+
+.nav-tabs .nav-link {
+    color: #666;
+    font-weight: 600;
+    padding: 12px 24px;
+    border: none;
+    border-bottom: 3px solid transparent;
+    transition: all 0.3s;
+}
+
+.nav-tabs .nav-link:hover {
+    color: #003366;
+}
+
+.nav-tabs .nav-link.active {
+    background-color: transparent;
+    color: #003366;
+    border-bottom-color: #003366;
+}
+
+.card {
+    transition: all 0.3s ease;
+    border: none;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.admin-event-card {
+    border: 1px solid #e0e0e0;
+}
+
+.admin-event-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15) !important;
+}
+
+.admin-event-card .card-img-top {
+    transition: transform 0.3s;
+}
+
+.admin-event-card:hover .card-img-top {
+    transform: scale(1.05);
+}
+
+.modal-lg {
+    max-width: 950px;
+}
+
+.modal-content {
+    border-radius: 15px;
+    border: none;
+}
+
+.modal-header {
+    background: linear-gradient(135deg, #003366 0%, #084b81 100%);
+    color: white;
+    border-radius: 15px 15px 0 0;
+    padding: 20px 30px;
+}
+
+.modal-header .btn-close {
+    filter: invert(1);
+}
+
+.modal-body {
+    padding: 30px;
+}
+
+.modal-footer {
+    border-top: 1px solid #e0e0e0;
+    padding: 20px 30px;
+}
+
+.badge {
+    font-size: 0.85rem;
+    padding: 0.5em 0.8em;
+    font-weight: 600;
+    border-radius: 6px;
+}
+
+.table {
+    background-color: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.table thead {
+    background-color: #003366;
+    color: white;
+}
+
+.table thead th {
+    border: none;
+    padding: 15px;
+    font-weight: 600;
+}
+
+.table tbody tr {
+    transition: background-color 0.2s;
+}
+
+.table tbody tr:hover {
+    background-color: #f8f9fa;
+}
+
+.form-select-sm {
+    width: auto;
+    min-width: 130px;
+    border-radius: 6px;
+    padding: 6px 12px;
+}
+
+#galeria-imagens {
+    max-height: 300px;
+    overflow-y: auto;
+    border: 2px dashed #dee2e6;
+    padding: 15px;
+    border-radius: 8px;
+    background-color: #f8f9fa;
+}
+
+#galeria-imagens .border {
+    border-color: #dee2e6 !important;
+    border-radius: 8px;
+    transition: all 0.2s;
+}
+
+#galeria-imagens .border:hover {
+    background-color: #f0f0f0;
+}
+
+
+#preview-imagem-principal img {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+
+input[type="file"] {
+    cursor: pointer;
+}
+
+input[type="file"]::-webkit-file-upload-button {
+    background-color: #003366;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-right: 10px;
+    transition: all 0.3s;
+}
+
+input[type="file"]::-webkit-file-upload-button:hover {
+    background-color: #084b81;
+}
+
+.btn-primary {
+    background-color: #003366;
+    border-color: #003366;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: all 0.3s;
+}
+
+.btn-primary:hover {
+    background-color: #084b81;
+    border-color: #084b81;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 51, 102, 0.3);
+}
+
+.btn-outline-danger {
+    border-radius: 8px;
+    transition: all 0.3s;
+}
+
+.btn-outline-danger:hover {
+    transform: translateY(-2px);
+}
+
+.spinner-border {
+    width: 3rem;
+    height: 3rem;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .login-box {
+        padding: 30px 20px;
+        margin: 20px;
+    }
+    
+    .nav-tabs .nav-link {
+        padding: 10px 15px;
+        font-size: 0.9rem;
+    }
+}
+
+
+.stat-card {
+    border: none;
+    border-left: 5px solid var(--bs-primary);
+    transition: all 0.2s ease-in-out;
+    border-radius: 12px; /* Combinando com seu estilo de card */
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1) !important;
+}
+
+.stat-card .card-body {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.stat-card-icon {
+    font-size: 3rem;
+    opacity: 0.3;
+    color: var(--bs-primary); 
+}
+
+.text-xs {
+    font-size: 0.8rem;
+}
+
+.table-responsive-sm {
+    border: 1px solid #dee2e6;
+    border-radius: 12px; 
+    overflow: hidden; 
+}
+
+/* Estilos para FullCalendar no Admin */
+#admin-calendar {
+    min-height: 500px;
+}
+
+.fc {
+    font-family: 'Roboto', sans-serif;
+}
+
+.fc-toolbar-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #003366;
+}
+
+.fc-button-primary {
+    background-color: #003366;
+    border-color: #003366;
+}
+
+.fc-button-primary:hover {
+    background-color: #084b81;
+    border-color: #084b81;
+}
+
+.fc-button-primary:not(:disabled):active,
+.fc-button-primary:not(:disabled).fc-button-active {
+    background-color: #084b81;
+    border-color: #084b81;
+}
+
+.fc-daygrid-event {
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.fc-daygrid-event:hover {
+    opacity: 0.8;
+    transform: scale(1.02);
+}
+
+.fc-day:hover {
+    cursor: pointer;
+    background-color: rgba(0, 51, 102, 0.05);
+}
+
+.bg-purple {
+    background-color: #6f42c1 !important;
+    color: white !important;
+}
+
+/* Estilos para o toggle de evento ativo */
+#toggle-icon {
+    transition: all 0.3s ease;
+}
+
+#toggle-icon.toggle-off {
+    color: #dc3545 !important;
+}
+
+#toggle-icon.toggle-on {
+    color: #28a745 !important;
+}
+
+.form-check-input:checked {
+    background-color: #28a745;
+    border-color: #28a745;
+}
+
+.form-check-input:focus {
+    border-color: #28a745;
+    outline: 0;
+    box-shadow: 0 0 0 0.25rem rgba(40, 167, 69, 0.25);
+}

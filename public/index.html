@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E.E Florentino Arnaldo Coelho</title>
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="shortcut icon" href="img/—Pngtree—school-logo_6851480.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="assets/img/favicon.png" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.css" rel="stylesheet">
+</head>
+
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top" id="mainNav">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="index.html">
+                <img src="assets/img/logoo.png" alt="Logo da Escola" style="height: 60px;">
+            </a>
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mx-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="index.html">HOME</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="sobre.html">SOBRE</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="iniciacao-cientifica.html">INICIAÇÃO CIENTÍFICA</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="painelDropdown" role="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            PAINEL DO USUÁRIO
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="painelDropdown">
+                            <li><a class="dropdown-item" href="admin-login.html"><i class="fas fa-shield-alt me-2"></i>Administrador</a></li>
+                            <li><a class="dropdown-item" href="login.html"><i class="fas fa-chalkboard-teacher me-2"></i>Professor</a></li>
+                            <li><a class="dropdown-item" href="login.html"><i class="fas fa-user-graduate me-2"></i>Aluno</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="contato.html">CONTATO</a>
+                    </li>
+                </ul>
+
+                <form class="d-flex" role="search" id="searchForm" onsubmit="handleSearch(event); return false;">
+                    <input class="form-control me-2" type="search" placeholder="Pesquisar..." aria-label="Search"
+                        name="q" id="searchInput">
+                    <button class="btn btn-warning" type="submit">🔍</button>
+                </form>
+            </div>
+        </div>
+    </nav>
+    <header>
+        <h1>Escola Estadual Florentino Arnaldo Coelho</h1>
+        <p>Nosso compromisso é despertar talentos, cultivar sonhos e guiar cada aluno rumo a um futuro de conquistas e
+            realização</p>
+    </header>
+
+    <main>
+
+        <section id="eventos-destaque" class="py-5" style="background: linear-gradient(135deg, #003366 0%, #084b81 100%);">
+            <div class="container">
+                <h2 class="text-center mb-5 text-white" style="color: white !important; font-size: 2.5rem; font-weight: 700; text-shadow: 2px 2px 4px rgba(0,0,0,0.3);">
+                    <i class="fas fa-calendar-star me-2"></i>Próximos Eventos
+                </h2>
+                <div id="eventosCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel" data-bs-interval="5000">
+                    
+                    <div class="carousel-indicators" id="eventos-carousel-indicators">
+                        </div>
+
+                    <div class="carousel-inner" id="eventos-carousel-inner">
+                        <div class="carousel-item active">
+                            <div class="evento-destaque-slide" style="background-image: url('assets/img/placeholder_event.png');">
+                                <div class="evento-destaque-overlay">
+                                    <div class="d-flex justify-content-center align-items-center h-100 text-center">
+                                        <div>
+                                            <div class="spinner-border text-warning" role="status" style="width: 3rem; height: 3rem;">
+                                                <span class="visually-hidden">Carregando...</span>
+                                            </div>
+                                            <p class="ms-3 fs-5 text-white mt-3">Carregando eventos...</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button class="carousel-control-prev" type="button" data-bs-target="#eventosCarousel" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#eventosCarousel" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+        <section id="m_v_v" class="container py-5" style="background-color: #f7f7f7;">
+            <h2 class="text-center mb-5" style="color: #003366; font-size: 2.5rem; font-weight: 700;">Missão, Visão e Valores</h2>
+
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="mvv-card-modern h-100">
+                        <div class="mvv-icon">
+                            <i class="fas fa-bullseye"></i>
+                        </div>
+                        <h3>Missão</h3>
+                        <p>A Missão da Escola Estadual Florentino Arnaldo Coelho é fornecer uma educação integral e
+                            de excelência, que transcenda o aprendizado em sala de aula, focando no desenvolvimento
+                            pleno do ser humano. Nosso compromisso é despertar o pensamento crítico, a criatividade
+                            e a autonomia em cada aluno, formando cidadãos éticos, responsáveis e prontos para se
+                            tornarem líderes e agentes de transformação positiva em uma sociedade em constante
+                            evolução.</p>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="mvv-card-modern h-100">
+                        <div class="mvv-icon">
+                            <i class="fas fa-eye"></i>
+                        </div>
+                        <h3>Visão</h3>
+                        <p>Nossa Visão é ser reconhecida como referência nacional em práticas pedagógicas inovadoras
+                            e sucesso estudantil até o final da década. Almejamos ser um ambiente escolar onde a
+                            inovação é a regra, o corpo docente é inspirador e a comunidade é ativamente engajada,
+                            garantindo que nossos egressos atinjam o mais alto nível de realização em suas vidas
+                            acadêmicas e profissionais.</p>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="mvv-card-modern h-100">
+                        <div class="mvv-icon">
+                            <i class="fas fa-heart"></i>
+                        </div>
+                        <h3>Valores</h3>
+                        <ul class="mvv-values-list">
+                            <li><i class="fas fa-check-circle me-2"></i>Respeito e inclusão</li>
+                            <li><i class="fas fa-check-circle me-2"></i>Compromisso com a aprendizagem</li>
+                            <li><i class="fas fa-check-circle me-2"></i>Inovação e criatividade</li>
+                            <li><i class="fas fa-check-circle me-2"></i>Responsabilidade social e ambiental</li>
+                            <li><i class="fas fa-check-circle me-2"></i>Trabalho em equipe e solidariedade</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <section id="he" class="container py-5">
+            <h2 class="text-center mb-5">Nossa Trajetória: História da E.E. Florentino Arnaldo Coelho</h2>
+
+            <div class="timeline">
+
+                <div class="timeline-event row align-items-center mb-5">
+                    <div class="col-md-5 text-md-end">
+                        <h3>1965: A Pedra Fundamental</h3>
+                        <p>Inaugurada oficialmente como 'Grupo Escolar Municipal', a escola começou sua jornada em um
+                            pequeno prédio de arquitetura colonial, com o propósito de alfabetizar os filhos dos
+                            trabalhadores rurais da região. A fundação estabeleceu o pilar de compromisso com a
+                            comunidade local.</p>
+                    </div>
+                    <div class="col-md-2 text-center d-none d-md-block">
+                        <div class="timeline-dot"></div>
+                    </div>
+                    <div class="col-md-5">
+                        <img src="assets/img/edificio_escola.jpg" class="img-fluid rounded shadow-sm"
+                            alt="Foto antiga da escola">
+                    </div>
+                </div>
+
+                <div class="timeline-event row align-items-center mb-5">
+                    <div class="col-md-5 order-md-7">
+                        <h3>1998: Expansão e Reconhecimento</h3>
+                        <p>Após uma grande reforma estrutural que dobrou sua capacidade, a escola foi rebatizada como
+                            E.E. Florentino Arnaldo Coelho, homenageando o educador mais influente da cidade. Essa fase
+                            marcou a introdução do Ensino Médio completo e a modernização de sua infraestrutura.</p>
+                    </div>
+                    <div class="col-md-2 text-center d-none d-md-block order-md-4">
+                        <div class="timeline-dot"></div>
+                    </div>
+                    <div class="col-md-5 order-md-1 text-md-end">
+                        <img src="assets/img/escola_com_criancas.jpg" class="img-fluid rounded shadow-sm"
+                            alt="Foto da reforma estrutural da escola">
+                    </div>
+                </div>
+
+                <div class="timeline-event row align-items-center mb-5">
+                    <div class="col-md-5 text-md-end">
+                        <h3>2010: Era Digital e o Laboratório</h3>
+                        <p>Em um movimento pioneiro, inauguramos nosso moderno Laboratório de Ciências e Tecnologia.
+                            Este evento solidificou o compromisso da escola com a Iniciação Científica e preparou nossos
+                            alunos para as demandas do mercado de trabalho e do ensino superior.</p>
+                    </div>
+                    <div class="col-md-2 text-center d-none d-md-block">
+                        <div class="timeline-dot"></div>
+                    </div>
+                    <div class="col-md-5">
+                        <img src="assets/img/laboratorio_de_quimica.jpg" class="img-fluid rounded shadow-sm"
+                            alt="Inauguração do Laboratório de Ciências">
+                    </div>
+                </div>
+
+                <div class="timeline-event row align-items-center mb-5">
+                    <div class="col-md-5 order-md-7">
+                        <h3>2024: Prêmio de Destaque Pedagógico</h3>
+                        <p>Nosso trabalho foi oficialmente reconhecido com o Prêmio Estadual de Destaque Pedagógico, em
+                            função do nosso projeto de Sustentabilidade. Este prêmio reflete a dedicação do nosso corpo
+                            docente e a excelência dos nossos alunos em projetos práticos.</p>
+                    </div>
+                    <div class="col-md-2 text-center d-none d-md-block order-md-4">
+                        <div class="timeline-dot"></div>
+                    </div>
+                    <div class="col-md-5 order-md-1 text-md-end">
+                        <img src="assets/img/destaque_pedagogico.png" class="img-fluid rounded shadow-sm"
+                            alt="Placa de Destaque Pedagógico">
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <section id="prof" class="professores container">
+
+            <h2>Nosso Corpo Docente</h2>
+
+            <div class="professores conteiner">
+
+                <div class="professor-card">
+                    <div class="card-image-container">
+                        <img src="assets/img/portugues.png" alt="Professor João Silva">
+                        <div class="card-overlay">
+                            <div class="overlay-text">
+                                <p>Mestre em Literatura Brasileira e Coordenador de Projetos de Leitura.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-info">
+                        <h3>Português</h3>
+                        <p>Pedro Algusto</p>
+                    </div>
+                </div>
+
+                <div class="professor-card">
+                    <div class="card-image-container">
+                        <img src="assets/img/matematica.png" alt="Professora Ana Costa">
+                        <div class="card-overlay">
+                            <div class="overlay-text">
+                                <p>Especialista em Metodologias Ativas e Olimpíadas de Matemática (OBMEP).</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-info">
+                        <h3>Matemática</h3>
+                        <p>Ana Costa</p>
+                    </div>
+                </div>
+
+                <div class="professor-card">
+                    <div class="card-image-container">
+                        <img src="assets/img/historia.png" alt="Professor Carlos Mendes">
+                        <div class="card-overlay">
+                            <div class="overlay-text">
+                                <p>Doutor em História Antiga e consultor de Patrimônio Histórico Regional.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-info">
+                        <h3>História</h3>
+                        <p>Carlos Mendes</p>
+                    </div>
+                </div>
+
+                <div class="professor-card">
+                    <div class="card-image-container">
+                        <img src="assets/img/geografia.png" alt="Professora Lúcia Pereira">
+                        <div class="card-overlay">
+                            <div class="overlay-text">
+                                <p>Pesquisadora em Geopolítica e responsável pelo Laboratório de Cartografia.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-info">
+                        <h3>Geografia</h3>
+                        <p>Lúcia Pereira</p>
+                    </div>
+                </div>
+
+                <div class="professor-card">
+                    <div class="card-image-container">
+                        <img src="assets/img/sociologia.png" alt="Professor Marcelo Alves">
+                        <div class="card-overlay">
+                            <div class="overlay-text">
+                                <p>Especialista em Sociologia Urbana e projetos de Engajamento Cívico.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-info">
+                        <h3>Sociologia</h3>
+                        <p>Marcelo Alves</p>
+                    </div>
+                </div>
+
+                <div class="professor-card">
+                    <div class="card-image-container">
+                        <img src="assets/img/filosofia.png" alt="Professora Renata Gomes">
+                        <div class="card-overlay">
+                            <div class="overlay-text">
+                                <p>Mestra em Ética e Desenvolvimento Humano, orientadora de debates.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-info">
+                        <h3>Filosofia</h3>
+                        <p>Renata Gomes</p>
+                    </div>
+                </div>
+
+                <div class="professor-card">
+                    <div class="card-image-container">
+                        <img src="assets/img/biologia.png" alt="Professora Laura Ribeiro">
+                        <div class="card-overlay">
+                            <div class="overlay-text">
+                                <p>Doutora em Botânica e coordenadora do Clube de Ciências da Natureza.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-info">
+                        <h3>Biologia</h3>
+                        <p>Laura Ribeiro</p>
+                    </div>
+                </div>
+
+                <div class="professor-card">
+                    <div class="card-image-container">
+                        <img src="assets/img/fisica.png" alt="Professor Ricardo Oliveira">
+                        <div class="card-overlay">
+                            <div class="overlay-text">
+                                <p>Engenheiro Elétrico e professor de Física com foco em Mecânica Clássica.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-info">
+                        <h3>Física</h3>
+                        <p>Ricardo Oliveira</p>
+                    </div>
+                </div>
+
+                <div class="professor-card">
+                    <div class="card-image-container">
+                        <img src="assets/img/ingles.png" alt="Professora Sofia Dantas">
+                        <div class="card-overlay">
+                            <div class="overlay-text">
+                                <p>Certificada Cambridge com experiência em intercâmbio e ensino bilíngue.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-info">
+                        <h3>Inglês</h3>
+                        <p>Sofia Dantas</p>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <section id="pa" class="container py-5">
+            <h2 class="text-center mb-5">Inovação, Talentos e Extensão Curricular: Nossos Projetos de Destaque</h2>
+
+            <div class="row projetos-cards d-flex align-items-stretch">
+
+                <div class="col-md-3 mb-4">
+                    <div class="card">
+                        <img src="assets/img/feira_de_ciencias.png" class="card-img-top"
+                            alt="Alunos na Feira de Ciências">
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title text-primary-color">Feira de Ciências e Tecnologia</h5>
+                            <p class="card-text">Evento anual que transforma a escola em um laboratório de inovação,
+                                desafiando os alunos a desenvolverem pesquisas originais e soluções práticas para
+                                problemas reais. É o principal palco para aplicar o raciocínio científico e aprimorar a
+                                capacidade de apresentação em público, com os melhores projetos avançando para
+                                competições estaduais.</p>
+                            <a href="detalhes.html?id=feiraDeCiencias"
+                                class="btn btn-primary mt-auto align-self-center">Veja Mais</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-3 mb-4">
+                    <div class="card">
+                        <img src="assets/img/clube_de_debates.png" class="card-img-top"
+                            alt="Alunos no Clube de Debates">
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title text-primary-color">Clubes de Debates e Oratória</h5>
+                            <p class="card-text">Uma atividade extracurricular intensa e semanal que foca no
+                                desenvolvimento da retórica, argumentação e pensamento crítico. Os alunos aprendem a
+                                estruturar discursos persuasivos, a analisar diferentes pontos de vista e a dominar a
+                                arte do debate, preparando-os de forma robusta para o ENEM e desafios da vida
+                                universitária.</p>
+                            <a href="detalhes.html?id=clubeDeDebates"
+                                class="btn btn-primary mt-auto align-self-center">Veja Mais</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-3 mb-4">
+                    <div class="card">
+                        <img src="assets/img/jornada_de_artes.png" class="card-img-top"
+                            alt="Atividade de Artes e Cultura">
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title text-primary-color">Jornada Cultural de Artes</h5>
+                            <p class="card-text">Um grande festival semestral que celebra a diversidade cultural e
+                                incentiva as expressões artísticas dos alunos. O programa inclui oficinas de Teatro,
+                                Música, Artes Visuais e culmina em uma exposição aberta à comunidade, promovendo a
+                                sensibilidade estética e o desenvolvimento de talentos criativos.</p>
+                            <a href="detalhes.html?id=jornadaCulturalDeArtes"
+                                class="btn btn-primary mt-auto align-self-center">Veja Mais</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-3 mb-4">
+                    <div class="card">
+                        <img src="assets/img/olimpiadas_do_conhecimento.png" class="card-img-top"
+                            alt="Referência às Olimpíadas de Matemática/Física">
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title text-primary-color">Olimpíadas do Conhecimento</h5>
+                            <p class="card-text">Nosso programa de aprofundamento é voltado para alunos de alto
+                                potencial, preparando-os especificamente para as principais competições nacionais como
+                                OBMEP (Matemática), OBF (Física) e outras. O objetivo é elevar o nível de excelência e
+                                garantir que nossos alunos alcancem as melhores classificações nessas áreas
+                                estratégicas.</p>
+                            <a href="detalhes.html?id=olimpiadasDoConhecimento"
+                                class="btn btn-primary mt-auto align-self-center">Veja Mais</a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <section id="ce" class="calendario container py-5">
+            <h2 class="text-center mb-4">Calendário Escolar</h2>
+            <p class="text-center text-muted mb-4">Confira as datas dos nossos eventos escolares</p>
+            <div class="row justify-content-center">
+                <div class="col-lg-10">
+                    <div id="calendar" class="bg-white p-4 rounded shadow-sm"></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="ma" class="py-5">
+            <h2 class="text-center mb-4">Pré-Matrícula e Informações para Ingresso</h2>
+
+            <p class="text-center mx-auto lead" style="max-width: 800px;">
+                Seja bem-vindo(a) à Escola Estadual Florentino Arnaldo Coelho!
+                Nossa pré-matrícula é o primeiro passo para garantir uma vaga em nossa instituição.
+                <strong style="color: #003366;">Preencha o formulário abaixo</strong> para registrar o interesse do
+                aluno.
+                Após o envio, nossa secretaria entrará em contato em até 48 horas úteis para
+                confirmar as informações, agendar uma entrevista ou visita guiada e detalhar
+                a documentação necessária para a matrícula final.
+            </p>
+            <div class="container mt-5">
+                <div class="row justify-content-center">
+                    <div class="col-md-6">
+                        <div class="card p-4 shadow-sm">
+                            <h3 class="card-title text-center">Preencha o Formulário abaixo</h3>
+                            <form id="form-matricula">
+                                <div class="mb-3">
+                                    <label for="n_aluno" class="form-label">Nome do aluno:</label>
+                                    <input type="text" id="n_aluno" name="nome do aluno" class="form-control" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="serie" class="form-label">Série pretendida</label>
+                                    <select name="serie" id="serie" class="form-select" required>
+                                        <option value="" disabled selected>Selecione a série</option>
+                                        <option value="6">6° ano</option>
+                                        <option value="7">7° ano</option>
+                                        <option value="8">8° ano</option>
+                                        <option value="9">9° ano</option>
+                                        <option value="1">1° ano</option>
+                                        <option value="2">2° ano</option>
+                                        <option value="3">3° ano</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="responsavel" class="form-label">Nome do Responsável:</label>
+                                    <input type="text" id="responsavel" name="responsavel" class="form-control"
+                                        required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="telefone" class="form-label">Telefone para contato:</label>
+                                    <input type="tel" id="telefone" name="telefone" class="form-control" required>
+                                </div>
+                                <button type="submit" class="btn btn-primary w-100 mt-3">ENVIAR PRÉ-MATRÍCULA</button>
+                                <div id="matricula-message" class="alert mt-3" style="display: none;"></div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p><strong>Escola Estadual Florentino Arnaldo Coelho</strong></p>
+        <p>Rua das Floripinas, 123 – Centro – Belo Horizonte/MG</p>
+        <p>📞 (31) 1234-5678 | 📧 contato@eeflorentinoalrnaldocoelho.com</p>
+
+        <p>
+            <a href="#home">Home</a> |
+            <a href="#m_v_v">Sobre</a> |
+            <a href="#ma">Matrículas</a> |
+            <a href="#">Contato</a>
+        </p>
+
+        <p>Siga-nos:
+            <a href="#facebook">Facebook</a> |
+            <a href="#instagram">Instagram</a> |
+            <a href="#youtube">YouTube</a>
+        </p>
+
+        <p>© Escola Estadual Florentino Arnaldo Coelho – Todos os direitos reservados</p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+        crossorigin="anonymous"></script>
+    <!-- FullCalendar - Carregar antes do app.js -->
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/locales/pt-br.global.min.js"></script>
+    <script>
+        // Aguardar FullCalendar carregar
+        window.addEventListener('load', function() {
+            if (typeof FullCalendar === 'undefined') {
+                console.error('FullCalendar não foi carregado! Tentando URL alternativa...');
+                // Tentar URL alternativa
+                const script = document.createElement('script');
+                script.src = 'https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js';
+                script.onload = function() {
+                    console.log('FullCalendar carregado via fallback');
+                };
+                script.onerror = function() {
+                    console.error('Erro ao carregar FullCalendar do CDN');
+                };
+                document.head.appendChild(script);
+            } else {
+                console.log('FullCalendar carregado com sucesso');
+            }
+        });
+    </script>
+    <script src="assets/scripts/app.js"></script>
+    <script src="assets/scripts/navbar.js"></script>
+
+</body>
+
+</html>

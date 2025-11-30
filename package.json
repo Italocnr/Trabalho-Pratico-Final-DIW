@@ -18,7 +18,7 @@
 
   "dependencies": {
 
-    "json-server": "^0.17.0"
+    "json-server": "^0.17.4"
 
   },
 
@@ -44,7 +44,9 @@
 
   },
 
-  "homepage": "https://github.com/Italocnr/Trabalho-Pratico-Final-DIW#readme"
+  "homepage": "https://github.com/Italocnr/Trabalho-Pratico-Final-DIW#readme",
+
+  "devDependencies": {}
 
 }
 

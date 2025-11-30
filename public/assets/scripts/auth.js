@@ -1,5 +1,8 @@
-// URL base da API
-const API_URL = 'http://localhost:3000';
+// URL base da API - Declarar globalmente
+if (typeof window.API_URL === 'undefined') {
+    window.API_URL = 'http://localhost:3000';
+}
+// Usar window.API_URL diretamente - não criar variável local
 
 // Função para converter data de DD/MM/YYYY para YYYY-MM-DD
 function converterDataParaFormatoJSON(dataString) {
@@ -63,7 +66,7 @@ async function fazerLogin(tipoUsuario, matricula, senha) {
     try {
         if (tipoUsuario === 'aluno') {
             // Buscar por matrícula
-            const response = await fetch(`${API_URL}/alunos?matricula=${matricula}`);
+            const response = await fetch(`${window.API_URL}/alunos?matricula=${matricula}`);
             const alunos = await response.json();
             
             if (alunos.length === 0) {
@@ -99,7 +102,7 @@ async function fazerLogin(tipoUsuario, matricula, senha) {
                 };
                 
                 try {
-                    const responseSessao = await fetch(`${API_URL}/sessoes`, {
+                    const responseSessao = await fetch(`${window.API_URL}/sessoes`, {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'
@@ -122,6 +125,13 @@ async function fazerLogin(tipoUsuario, matricula, senha) {
                 localStorage.setItem('usuarioId', aluno.id);
                 localStorage.setItem('precisaTrocarSenha', precisaTrocarSenha ? 'true' : 'false');
                 localStorage.setItem('usuarioData', JSON.stringify(aluno));
+                
+                console.log('=== DADOS SALVOS NO LOCALSTORAGE ===');
+                console.log('tipoUsuario:', 'aluno');
+                console.log('usuarioId:', aluno.id);
+                console.log('usuarioData:', aluno);
+                console.log('=== FIM DO LOGIN ===');
+                
                 return true;
             } else {
                 console.log('Senha inválida');
@@ -129,7 +139,7 @@ async function fazerLogin(tipoUsuario, matricula, senha) {
             }
         } else if (tipoUsuario === 'professor') {
             // Buscar por matrícula
-            const response = await fetch(`${API_URL}/professores?matricula=${matricula}`);
+            const response = await fetch(`${window.API_URL}/professores?matricula=${matricula}`);
             const professores = await response.json();
             
             if (professores.length === 0) {
@@ -165,7 +175,7 @@ async function fazerLogin(tipoUsuario, matricula, senha) {
                 };
                 
                 try {
-                    const responseSessao = await fetch(`${API_URL}/sessoes`, {
+                    const responseSessao = await fetch(`${window.API_URL}/sessoes`, {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'
@@ -262,13 +272,32 @@ async function obterCurrentUser() {
         const endpoint = tipoUsuario === 'aluno' ? 'alunos' : tipoUsuario === 'professor' ? 'professores' : null;
         if (!endpoint) return null;
         
-        const response = await fetch(`${API_URL}/${endpoint}/${usuarioId}`);
-        if (!response.ok) return null;
+        const response = await fetch(`${window.API_URL}/${endpoint}/${usuarioId}`);
+        if (!response.ok) {
+            console.warn(`Erro ao buscar ${endpoint}/${usuarioId}:`, response.status, response.statusText);
+            return null;
+        }
         
         const usuario = await response.json();
         
+        if (!usuario || !usuario.id) {
+            console.warn('Dados do usuário inválidos:', usuario);
+            return null;
+        }
+        
+        // Verificar se os dados mudaram antes de atualizar
+        const dadosAntigosStr = localStorage.getItem('usuarioData');
+        const dadosMudaram = !dadosAntigosStr || JSON.stringify(usuario) !== dadosAntigosStr;
+        
         // Atualizar localStorage com dados atualizados
         localStorage.setItem('usuarioData', JSON.stringify(usuario));
+        
+        // Disparar evento se os dados mudaram
+        if (dadosMudaram) {
+            window.dispatchEvent(new CustomEvent('currentUserUpdated', {
+                detail: { usuario, tipoUsuario }
+            }));
+        }
         
         return usuario;
     } catch (error) {

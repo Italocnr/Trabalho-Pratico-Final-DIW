@@ -1,74 +1,365 @@
-# Trabalho Prático 06 - Semanas 11 e 12
+# Trabalho Prático Final - Sistema de Gestão Escolar
 
-Nessa etapa, você irá evoluir o projeto anterior e montando um ambiente de desenvolvimento mais completo, típico de projetos profissionais. Nesse processo, vamos utilizar um **servidor backend simulado** com o JSON Server que fornece uma APIs RESTful a partir de um arquivo JSON.
+## 📋 Informações do Projeto
 
-Para esse projeto, além de mudarmos o JSON para o JSON Server, vamos permitir o cadastro e alteração de dados da entidade principal (CRUD).
+- **Nome:** Ítalo Eduardo Carneiro da Silva
+- **Matrícula:** 898961
+- **Proposta:** Organização e equipes - Escolas
+- **Descrição:** Sistema completo de gestão escolar com painéis para alunos, professores e administradores, incluindo gerenciamento de eventos, pré-matrículas, notas e favoritos.
 
-## Informações do trabalho
+---
 
-- Nome: Ítalo Eduardo Carneiro da Sílva
-- Matricula: 898961
-- Proposta de projeto escolhida:  (Organização e equipes) - Escolas
-- Breve descrição sobre seu projeto: Este projeto é uma Landing Page moderna e responsiva, desenvolvida para simular o website institucional da Escola Estadual fictícia Florentino Arnaldo Coelho. O principal objetivo é demonstrar a aplicação prática de HTML, CSS, o framework Bootstrap e JS para criar uma experiência de usuário (UX) clara e envolvente. A página destaca os pilares de uma instituição de ensino de excelência: Missão visão e Valores,História da escola, Projetos de Destaque (como Iniciação Científica e Cultura) e um Fluxo de Pré-Matrícula direto. O design foi pensado para transmitir confiança, profissionalismo e dinamismo, utilizando uma paleta de cores azul e um layout limpo para facilitar a navegação e a comunicação com a comunidade escolar.
+## 🚀 Como Iniciar o Projeto
 
-**Print das telas implementadas**
-- Carrosel de eventos da pagina principal do site
-![CarroselEventos](public/assets/img/carrosel_de_eventos.png)
-- Calendario de eventos na pagina principal
-![CalendarioEventos](public/assets/img/calendario_eventos.png)
-- HomePage da pagina de administrador
-![HomePageAdmin](public/assets/img/homePage_admin.png)
-- Secção de eventos da pagina de administrador
-![EventosAdmin](public/assets/img/eventos_admin.png)
-- Secção de matriculas da página de administrador
-![MatriculasAdmin](public/assets/img/matriculas_admin.png)
+### Pré-requisitos
+- Node.js instalado (versão 14 ou superior)
+- Navegador moderno (Chrome, Firefox, Edge)
 
+### Passos para Iniciar
 
-## **Orientações Gerais**
+1. **Instalar dependências:**
+   ```bash
+   npm install
+   ```
 
-Nesse projeto você vai encontrar a seguinte estrutura base:
+2. **Iniciar o servidor JSON:**
+   ```bash
+   npm start
+   ```
+   
+   O servidor será iniciado em `http://localhost:3000`
 
-* **Pasta db**
-  Essa pasta contem um único arquivo: `db.json`. Esse arquivo serve de banco de dados simulado e nele você deve colocar as estruturas de dados que o seu projeto manipula.
-  * **OBS**: Já incluímos a estrutura de usuários como exemplo e para que você possa utlizar no seu projeto. Se precisar, faça os ajustes necessários para seu projeto.
-* **Pasta public**
-  Nesta pasta você deve colocar todos os arquivos do seu site (front end). Aqui vão os arquivos HTML, CSS, JavaScript, imagens, vídeos e tudo o mais que precisar para a interface do usuário.
-* **Arquivo README.md**
-  Este arquivo em que são colocadas as informações de quem está desenvolvendo esse projeto e os registros solicitados no enunciado da tarefa.
-* **Arquivo .gitignore**
-  Configuração do que deve ser ignorado pelo git evitando que seja enviado para o servidor no GitHub.
-* **Arquivo package.json**
-  Considerado o manifesto do projeto ou arquivo de configuração. Nesle são incluídas as informações básicas sobre o projeto (descrição, versão, palavras-chave, licença, copyright), a lista de pacotes dos quais o projeto depende tanto para desenvolvimento quanto execução, uma lista de  do projeto, scripts entre outras opções.
-  * **OBS**: Esse arquivo é criado assim que o projeto é iniciado por meio do comando `npm init`.
-  * **OBS2**: Esse arquivo já traz a informação de necessidade do JSONServer.
-* **Pasta node_modules**
-  Local onde ficam os pacotes dos quais o projeto depende. Evite enviar essa pasta para o repositório remoto. Essa pasta é reconstruída toda vez que se executa o comando `npm install`.
+3. **Acessar o site:**
+   - Abra seu navegador
+   - Acesse: `http://localhost:3000/index.html`
+   - Ou simplesmente: `http://localhost:3000`
 
-**Ambiente de Desenvolvimento (IMPORTANTE)**
+---
 
-> A partir de agora, **NÃO utilizamos mais o LiveServer/FiveServer** durante o processo de desenvolvimento. O próprio JSONServer faz o papel de servidor.
+## 🔐 Dados de Login para Teste
 
-Para iniciar o JSONServer e acessar os arquivos do seu site, siga os seguintes passos:
+### 👨‍🎓 **ALUNOS**
 
-1. Abra a pasta do projeto dentro da sua IDE (por exemplo, Visual Studio Code)
-2. Abra uma janela de teminal e certifique-se que a pasta do terminal é a pasta do projeto
-3. Execute o comando `npm install`
-   Isso vai reconstruir a pasta node_modules e instalar todos os pacotes necessários para o nosso ambiente de desenvolvimento (Ex: JSONServer).
-4. Execute o comando `npm start`
-   Isso vai executar o JSONServer e permitir que você consiga acessar o seu site no navegador.
-5. Para testar o projeto:
-   1. **Site Front End**: abra um navegador e acesse o seu site pela seguinte URL: 
-      [http://localhost:3000]()
-   2. **Site Back End**: abra o navegador e acesse as informações da estrutura de usuários por meio da API REST do JSONServer a partir da seguinte URL: 
-      [http://localhost:3000/usuarios](http://localhost:3000/usuarios)
+#### Aluno 1 - João Silva
+- **Tipo:** Aluno
+- **Matrícula:** `AL001`
+- **Senha:** `joaozinho123`
+- **Turma:** 1º Ano A
+- **Notas:** Possui 3 bimestres de Matemática
 
-Ao criar suas estruturas de dados no arquivo db.json, você poderá obter estes dados através do endereço: http://localhost:3000/SUA_ESTRUTURA, tal qual como foi feito com a estrutura de usuários. **IMPORTANTE**: Ao editar o arquivo db.json, é necessário parar e reiniciar o JSONServer.
+#### Aluno 2 - Maria Oliveira
+- **Tipo:** Aluno
+- **Matrícula:** `AL002`
+- **Senha:** `2009-08-20` (data de nascimento)
+- **Turma:** 1º Ano A
+- **Notas:** Possui 2 bimestres de Matemática
 
-**IMPORTANTE:** Assim como informado anteriormente, capriche na etapa pois você vai precisar dessa parte para as próximas semanas. 
+#### Aluno 3 - Pedro Santos
+- **Tipo:** Aluno
+- **Matrícula:** `AL003`
+- **Senha:** `2010-03-12` (data de nascimento)
+- **Turma:** 1º Ano A
+- **Notas:** Possui 2 bimestres de Matemática
 
-**IMPORTANTE:** Você deve trabalhar:
+### 👨‍🏫 **PROFESSORES**
 
-* na pasta **`public`,** para os arquivos de front end, mantendo os arquivos **`index.html`**, **`detalhes.html`**, **`styles.css`** e **`app.js`** com estes nomes, e
-* na pasta **`db`**, com o arquivo `db.json`.
+#### Professor 1 - Ana Costa (Matemática)
+- **Tipo:** Professor
+- **Matrícula:** `PROF001`
+- **Senha:** `ana123`
+- **Disciplina:** Matemática
+- **Formação:** Mestre em Matemática Aplicada
+- **Turma:** 1º Ano A (professorId: 1)
 
-Deixe todos os demais arquivos e pastas desse repositório inalterados. **PRESTE MUITA ATENÇÃO NISSO.**
+#### Professor 2 - Carlos Mendes (Português)
+- **Tipo:** Professor
+- **Matrícula:** `PROF002`
+- **Senha:** `1982-07-25` (data de nascimento)
+- **Disciplina:** Português
+- **Formação:** Doutor em Letras
+- **Turma:** 3º Ano B (professorId: 2)
+
+### 👨‍💼 **ADMINISTRADOR**
+
+#### Administrador
+- **Tipo:** Administrador
+- **Usuário:** `admin`
+- **Senha:** `admin123`
+- **Acesso:** Painel completo de administração
+
+---
+
+## 🧪 Guia de Teste das Funcionalidades
+
+### 📱 **1. Página Inicial (Home)**
+
+**Acesso:** `http://localhost:3000/index.html`
+
+**Funcionalidades para testar:**
+- ✅ Navegação pelo menu (Home, Sobre, Iniciação Científica, Contato)
+- ✅ Carrossel de eventos
+- ✅ Calendário de eventos
+- ✅ Seção de pré-matrícula
+- ✅ Busca de eventos
+- ✅ Visualização de detalhes dos eventos
+- ✅ Marcar eventos como favoritos (apenas quando logado como aluno)
+
+---
+
+### 👨‍🎓 **2. Painel do Aluno**
+
+**Acesso:** 
+1. Ir para `http://localhost:3000/login.html`
+2. Selecionar tipo: **Aluno**
+3. Fazer login com uma das credenciais de aluno acima
+
+**Funcionalidades para testar:**
+
+#### **Aba: Minhas Notas**
+- ✅ Visualizar notas por disciplina e bimestre
+- ✅ Filtrar por bimestre (1º, 2º, 3º, 4º)
+- ✅ Filtrar por disciplina
+- ✅ Ver média geral e situação (Aprovado/Recuperação/Reprovado)
+- ✅ Ver estatísticas (disciplinas aprovadas, em recuperação, reprovadas)
+
+#### **Aba: Desempenho**
+- ✅ Gráfico de médias por disciplina
+- ✅ Gráfico de evolução ao longo do ano
+- ✅ Ranking de disciplinas
+
+#### **Aba: Calendário**
+- ✅ Visualizar eventos escolares no calendário
+- ✅ Ver detalhes dos eventos
+
+#### **Aba: Histórico**
+- ✅ Ver histórico completo de todas as notas
+- ✅ Filtrar e ordenar notas
+
+#### **Favoritos (no painel do aluno)**
+- ✅ Marcar eventos como favoritos na página inicial
+- ✅ Ver favoritos no painel do aluno
+- ✅ Remover favoritos
+
+#### **Botão Sair**
+- ✅ Clicar no botão "Sair" no canto superior direito
+- ✅ Verificar se redireciona para a página inicial
+- ✅ Verificar se limpa os dados de sessão
+
+---
+
+### 👨‍🏫 **3. Painel do Professor**
+
+**Acesso:**
+1. Ir para `http://localhost:3000/login.html`
+2. Selecionar tipo: **Professor**
+3. Fazer login com uma das credenciais de professor acima
+
+**Funcionalidades para testar:**
+
+#### **Aba: Minhas Turmas**
+- ✅ Visualizar lista de turmas do professor
+- ✅ Ver informações de cada turma (série, turno, ano letivo)
+- ✅ Ver total de turmas
+
+#### **Aba: Lançar Notas**
+- ✅ Selecionar turma
+- ✅ Selecionar bimestre
+- ✅ Clicar em "Carregar Alunos"
+- ✅ Ver lista de alunos da turma
+- ✅ Inserir/editar notas (Nota 1, Nota 2, Nota 3)
+- ✅ Ver média calculada automaticamente
+- ✅ Salvar notas
+- ✅ Verificar se as notas aparecem no painel do aluno
+
+#### **Aba: Consultar Notas**
+- ✅ Selecionar turma
+- ✅ Selecionar bimestre (ou todos)
+- ✅ Ver todas as notas dos alunos
+- ✅ Ver situação de cada aluno (Aprovado/Recuperação/Reprovado)
+
+#### **Botão Sair**
+- ✅ Clicar no botão "Sair" no canto superior direito
+- ✅ Verificar se redireciona para a página inicial
+- ✅ Verificar se limpa os dados de sessão
+
+---
+
+### 👨‍💼 **4. Painel do Administrador**
+
+**Acesso:**
+1. Ir para `http://localhost:3000/admin-login.html`
+2. Usuário: `admin`
+3. Senha: `admin123`
+
+**Funcionalidades para testar:**
+
+#### **Aba: Eventos**
+- ✅ Visualizar lista de eventos
+- ✅ Criar novo evento
+- ✅ Editar evento existente
+- ✅ Excluir evento
+- ✅ Ativar/desativar evento
+
+#### **Aba: Pré-Matrículas**
+- ✅ Visualizar lista de pré-matrículas
+- ✅ Confirmar pré-matrícula
+- ✅ Rejeitar pré-matrícula
+- ✅ Ver detalhes da pré-matrícula
+
+#### **Aba: Mensagens**
+- ✅ Visualizar mensagens recebidas
+- ✅ Responder mensagens
+- ✅ Excluir mensagens
+
+#### **Botão Sair**
+- ✅ Clicar no botão "Sair" no canto superior direito
+- ✅ Verificar se redireciona para a página inicial
+- ✅ Verificar se limpa os dados de sessão
+
+---
+
+## 📊 Estrutura de Dados no db.json
+
+### Alunos
+- **3 alunos** cadastrados
+- Todos na turma 1 (1º Ano A)
+- Cada aluno possui notas de Matemática
+
+### Professores
+- **2 professores** cadastrados
+- Ana Costa: Matemática (turma 1)
+- Carlos Mendes: Português (turma 2)
+
+### Turmas
+- **2 turmas** cadastradas
+- 1º Ano A (Manhã) - Professor: Ana Costa
+- 3º Ano B (Tarde) - Professor: Carlos Mendes
+
+### Notas
+- **7 notas** cadastradas
+- Distribuídas entre os 3 alunos
+- Todas de Matemática (disciplina do professor Ana Costa)
+
+---
+
+## 🔍 Testes de API REST
+
+Você pode testar diretamente as APIs REST usando o navegador ou ferramentas como Postman:
+
+### Endpoints Disponíveis
+
+#### Alunos
+- `GET http://localhost:3000/alunos` - Listar todos os alunos
+- `GET http://localhost:3000/alunos/1` - Buscar aluno por ID
+- `GET http://localhost:3000/alunos?matricula=AL001` - Buscar aluno por matrícula
+- `GET http://localhost:3000/alunos?turmaId=1` - Buscar alunos por turma
+
+#### Professores
+- `GET http://localhost:3000/professores` - Listar todos os professores
+- `GET http://localhost:3000/professores/1` - Buscar professor por ID
+- `GET http://localhost:3000/professores?matricula=PROF001` - Buscar professor por matrícula
+
+#### Turmas
+- `GET http://localhost:3000/turmas` - Listar todas as turmas
+- `GET http://localhost:3000/turmas/1` - Buscar turma por ID
+- `GET http://localhost:3000/turmas?professorId=1` - Buscar turmas por professor
+
+#### Notas
+- `GET http://localhost:3000/notas` - Listar todas as notas
+- `GET http://localhost:3000/notas?alunoId=1` - Buscar notas por aluno
+- `GET http://localhost:3000/notas?turmaId=1` - Buscar notas por turma
+- `GET http://localhost:3000/notas?alunoId=1&bimestre=1` - Buscar notas por aluno e bimestre
+- `POST http://localhost:3000/notas` - Criar nova nota
+- `PUT http://localhost:3000/notas/1` - Atualizar nota existente
+
+#### Eventos
+- `GET http://localhost:3000/eventos` - Listar todos os eventos
+- `GET http://localhost:3000/eventos?ativo=true` - Listar apenas eventos ativos
+- `POST http://localhost:3000/eventos` - Criar novo evento
+- `PUT http://localhost:3000/eventos/1` - Atualizar evento
+- `DELETE http://localhost:3000/eventos/1` - Excluir evento
+
+---
+
+## 🐛 Solução de Problemas
+
+### Erro: "API_URL has already been declared"
+- **Solução:** Limpe o cache do navegador (Ctrl+Shift+R ou Ctrl+F5)
+- Se persistir, feche todas as abas do navegador e abra novamente
+
+### Dados não aparecem no painel
+- **Verifique:** Se o servidor JSON está rodando (`npm start`)
+- **Verifique:** Se há erros no console do navegador (F12)
+- **Verifique:** Se os dados estão no `db.json`
+
+### Botão de logout não funciona
+- **Solução:** Os botões foram corrigidos para limpar o localStorage e redirecionar corretamente
+
+### Erro de CORS
+- **Solução:** Certifique-se de que está acessando pelo `http://localhost:3000` e não por `file://`
+
+---
+
+## 📝 Notas Importantes
+
+1. **Servidor JSON:** O servidor deve estar rodando para que o site funcione corretamente
+2. **Cache do Navegador:** Sempre limpe o cache após fazer alterações nos arquivos JavaScript
+3. **Dados Mockados:** Todos os dados estão no arquivo `db/db.json`
+4. **Favoritos:** A funcionalidade de favoritos está disponível apenas para alunos e aparece no painel do aluno
+5. **Logout:** Foi removido da navbar principal, permanecendo apenas nos painéis de usuário
+
+---
+
+## 🎯 Checklist de Teste para Avaliação
+
+### ✅ Funcionalidades Básicas
+- [ ] Login de aluno funciona
+- [ ] Login de professor funciona
+- [ ] Login de administrador funciona
+- [ ] Logout funciona em todos os painéis
+- [ ] Dados do aluno são exibidos corretamente
+- [ ] Dados do professor são exibidos corretamente
+- [ ] Turmas do professor são carregadas
+- [ ] Alunos da turma são carregados
+
+### ✅ Funcionalidades do Aluno
+- [ ] Visualizar notas
+- [ ] Filtrar notas por bimestre
+- [ ] Filtrar notas por disciplina
+- [ ] Ver gráficos de desempenho
+- [ ] Ver calendário de eventos
+- [ ] Ver histórico de notas
+- [ ] Marcar eventos como favoritos
+- [ ] Ver favoritos no painel
+
+### ✅ Funcionalidades do Professor
+- [ ] Ver lista de turmas
+- [ ] Carregar alunos para lançar notas
+- [ ] Inserir notas (Nota 1, 2, 3)
+- [ ] Ver média calculada automaticamente
+- [ ] Salvar notas
+- [ ] Consultar notas dos alunos
+- [ ] Filtrar notas por bimestre
+
+### ✅ Funcionalidades do Administrador
+- [ ] Visualizar eventos
+- [ ] Criar novo evento
+- [ ] Editar evento
+- [ ] Excluir evento
+- [ ] Visualizar pré-matrículas
+- [ ] Confirmar/rejeitar pré-matrículas
+- [ ] Visualizar mensagens
+
+---
+
+## 📞 Suporte
+
+Em caso de problemas:
+1. Verifique se o servidor está rodando
+2. Verifique o console do navegador (F12) para erros
+3. Certifique-se de que todas as dependências foram instaladas (`npm install`)
+
+---
+
+**Desenvolvido por:** Ítalo Eduardo Carneiro da Silva  
+**Data:** 30/11/2025

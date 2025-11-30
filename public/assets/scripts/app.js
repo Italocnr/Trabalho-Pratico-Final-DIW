@@ -703,7 +703,7 @@ async function salvarMatricula(e) {
 
 // Função para carregar eventos da API e exibir na página inicial
 async function loadEventos() {
-    const eventosContainer = document.querySelector('#eventos .row.eventos-cards');
+    const eventosContainer = document.getElementById('eventos-container');
     
     if (!eventosContainer) {
         console.error('Container de eventos não encontrado');
@@ -749,6 +749,9 @@ async function loadEventos() {
         
         console.log(`Eventos após filtro: ${eventos.length} eventos ativos`);
         
+        // Armazenar eventos globalmente para pesquisa
+        todosEventos = eventos;
+        
         eventosContainer.innerHTML = '';
         
         if (!eventos || eventos.length === 0) {
@@ -756,10 +759,21 @@ async function loadEventos() {
             return;
         }
         
-        eventos.forEach(evento => {
+        eventos.forEach(async evento => {
             console.log('Criando card para evento:', evento);
-            const eventoCard = createEventoCard(evento);
+            const eventoCard = createEventoCard(evento, true);
             eventosContainer.appendChild(eventoCard);
+            
+            // Verificar se é favorito e atualizar ícone
+            if (typeof isFavorito !== 'undefined' && typeof atualizarIconeFavorito !== 'undefined') {
+                setTimeout(async () => {
+                    const jaFavorito = await isFavorito(evento.id);
+                    const botaoFavorito = eventoCard.querySelector('[data-favorito-id]');
+                    if (botaoFavorito) {
+                        atualizarIconeFavorito(evento.id, botaoFavorito, jaFavorito);
+                    }
+                }, 100);
+            }
         });
         
         console.log(`${eventos.length} eventos carregados com sucesso`);
@@ -775,10 +789,16 @@ async function loadEventos() {
     }
 }
 
+// Variável global para armazenar todos os eventos
+let todosEventos = [];
+
 // Função para criar card de evento
-function createEventoCard(evento) {
+function createEventoCard(evento, incluirFavorito = true) {
     const col = document.createElement('div');
-    col.className = 'col-md-3 mb-4';
+    col.className = 'col-md-3 mb-4 evento-card-item';
+    col.setAttribute('data-event-id', evento.id || '');
+    col.setAttribute('data-event-titulo', (evento.titulo || '').toLowerCase());
+    col.setAttribute('data-event-descricao', (evento.introducao || '').toLowerCase());
     
     const imagem = evento.secaoDetalhes1?.imagem || evento.imagem || 'assets/img/calendario.png';
     const titulo = evento.titulo || 'Evento';
@@ -787,13 +807,22 @@ function createEventoCard(evento) {
     
     // Escapar caracteres especiais para evitar problemas no HTML
     const escapeHtml = (str) => {
+        if (!str) return '';
         const div = document.createElement('div');
         div.textContent = str;
         return div.innerHTML;
     };
     
+    // Criar botão de favorito se usuário estiver logado
+    let botaoFavorito = '';
+    if (incluirFavorito && typeof criarBotaoFavorito !== 'undefined') {
+        // Verificar se é favorito (será atualizado depois)
+        botaoFavorito = criarBotaoFavorito(eventoId, false);
+    }
+    
     col.innerHTML = `
-        <div class="card evento-card h-100">
+        <div class="card evento-card h-100" style="position: relative;">
+            ${botaoFavorito}
             <img src="${escapeHtml(imagem)}" class="card-img-top" alt="${escapeHtml(titulo)}" style="height: 200px; object-fit: cover;" onerror="this.src='assets/img/calendario.png'">
             <div class="card-body d-flex flex-column">
                 <h5 class="card-title text-primary-color">${escapeHtml(titulo)}</h5>
@@ -804,6 +833,63 @@ function createEventoCard(evento) {
     `;
     
     return col;
+}
+
+// Função para filtrar eventos por pesquisa
+async function filtrarEventos() {
+    const termo = document.getElementById('pesquisa-eventos')?.value.toLowerCase().trim() || '';
+    const cards = document.querySelectorAll('.evento-card-item');
+    
+    if (!termo) {
+        // Mostrar todos os cards
+        cards.forEach(card => {
+            card.style.display = '';
+        });
+        return;
+    }
+    
+    // Filtrar cards
+    let encontrados = 0;
+    cards.forEach(card => {
+        const titulo = card.getAttribute('data-event-titulo') || '';
+        const descricao = card.getAttribute('data-event-descricao') || '';
+        
+        if (titulo.includes(termo) || descricao.includes(termo)) {
+            card.style.display = '';
+            encontrados++;
+        } else {
+            card.style.display = 'none';
+        }
+    });
+    
+    // Mostrar mensagem se não encontrou nada
+    const container = document.getElementById('eventos-container');
+    let msgVazio = container.querySelector('.msg-pesquisa-vazia');
+    
+    if (encontrados === 0 && termo) {
+        if (!msgVazio) {
+            msgVazio = document.createElement('div');
+            msgVazio.className = 'col-12 text-center py-5 msg-pesquisa-vazia';
+            msgVazio.innerHTML = `
+                <i class="fas fa-search fa-3x text-muted mb-3"></i>
+                <h4 class="text-muted">Nenhum evento encontrado</h4>
+                <p class="text-muted">Tente pesquisar com outros termos.</p>
+            `;
+            container.appendChild(msgVazio);
+        }
+        msgVazio.style.display = 'block';
+    } else if (msgVazio) {
+        msgVazio.style.display = 'none';
+    }
+}
+
+// Função para limpar pesquisa
+function limparPesquisa() {
+    const input = document.getElementById('pesquisa-eventos');
+    if (input) {
+        input.value = '';
+        filtrarEventos();
+    }
 }
 
 

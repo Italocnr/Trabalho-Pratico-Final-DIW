@@ -1,5 +1,9 @@
-// URL base da API
-const API_URL = 'http://localhost:3000';
+// URL base da API - Usar window.API_URL diretamente
+if (typeof window.API_URL === 'undefined') {
+    window.API_URL = 'http://localhost:3000';
+}
+// Usar window.API_URL diretamente - não criar variável local para evitar conflito
+// Todas as referências devem usar window.API_URL
 
 // Estado global
 let alunoAtual = null;
@@ -13,28 +17,123 @@ let ultimaAtualizacaoNotas = null;
 
 // Inicialização
 document.addEventListener('DOMContentLoaded', function() {
+    console.log('=== INICIALIZAÇÃO DO PAINEL DO ALUNO ===');
+    console.log('API_URL:', window.API_URL);
+    console.log('Verificando localStorage...');
+    console.log('tipoUsuario:', localStorage.getItem('tipoUsuario'));
+    console.log('usuarioId:', localStorage.getItem('usuarioId'));
+    console.log('usuarioData:', localStorage.getItem('usuarioData'));
+    
+    // Verificar se API_URL está definida
+    if (!window.API_URL) {
+        console.error('❌ API_URL não está definida!');
+        alert('Erro: API_URL não está definida. Verifique se o servidor está rodando.');
+        return;
+    }
+    
+    // Testar conexão com a API
+    fetch(`${window.API_URL}/alunos`)
+        .then(response => {
+            console.log('✅ Conexão com API OK:', response.status);
+            if (!response.ok) {
+                console.warn('⚠ API retornou status:', response.status);
+            }
+        })
+        .catch(error => {
+            console.error('❌ Erro ao conectar com API:', error);
+            alert('Erro ao conectar com o servidor. Verifique se o servidor JSON está rodando (npm start)');
+        });
+    
     // Verificar autenticação
     if (typeof redirecionarSeNaoAutenticado === 'function') {
+        console.log('Função redirecionarSeNaoAutenticado encontrada');
         redirecionarSeNaoAutenticado('aluno');
     } else {
+        console.log('Função redirecionarSeNaoAutenticado não encontrada, carregando script...');
         // Carregar script de autenticação se não estiver disponível
         const script = document.createElement('script');
         script.src = '../../assets/scripts/auth.js';
         script.onload = function() {
+            console.log('Script auth.js carregado');
             redirecionarSeNaoAutenticado('aluno');
-            carregarDadosAluno();
-            configurarEventos();
+            setTimeout(() => {
+                carregarDadosAluno();
+                configurarEventos();
+            }, 100);
         };
         document.head.appendChild(script);
         return;
     }
     
-    carregarDadosAluno();
-    configurarEventos();
+    console.log('Chamando carregarDadosAluno()...');
+    setTimeout(() => {
+        carregarDadosAluno();
+        configurarEventos();
+    }, 100);
+    
+    // Listener para quando os dados do current user forem atualizados
+    window.addEventListener('currentUserUpdated', async function(event) {
+        const { usuario, tipoUsuario } = event.detail;
+        if (tipoUsuario === 'aluno' && usuario && usuario.id === alunoAtual?.id) {
+            console.log('Dados do aluno atualizados via evento');
+            const turmaMudou = usuario.turmaId !== alunoAtual?.turmaId;
+            alunoAtual = usuario;
+            
+            // Recarregar turma se mudou
+            if (turmaMudou && alunoAtual.turmaId) {
+                try {
+                            const responseTurma = await fetch(`${window.API_URL}/turmas/${alunoAtual.turmaId}`);
+                    if (responseTurma.ok) {
+                        turmaAluno = await responseTurma.json();
+                    }
+                } catch (e) {
+                    console.warn('Erro ao carregar turma:', e);
+                }
+            }
+            
+            exibirDadosAluno();
+        }
+    });
     
     // Iniciar atualização automática de current user
     if (typeof iniciarAtualizacaoCurrentUser === 'function') {
-        intervalIdCurrentUser = iniciarAtualizacaoCurrentUser(30000); // Atualizar a cada 30 segundos
+        // Criar função customizada para atualizar também a interface
+        const atualizarCurrentUserComInterface = async () => {
+            if (typeof obterCurrentUser === 'function') {
+                const currentUser = await obterCurrentUser();
+                if (currentUser && currentUser.id === alunoAtual?.id) {
+                    // Atualizar apenas se os dados mudaram
+                    const dadosMudaram = JSON.stringify(currentUser) !== JSON.stringify(alunoAtual);
+                    const turmaMudou = currentUser.turmaId !== alunoAtual?.turmaId;
+                    
+                    if (dadosMudaram || turmaMudou) {
+                        alunoAtual = currentUser;
+                        
+                        // Recarregar turma se mudou
+                        if (turmaMudou && alunoAtual.turmaId) {
+                            try {
+                                const responseTurma = await fetch(`${window.API_URL}/turmas/${alunoAtual.turmaId}`);
+                                if (responseTurma.ok) {
+                                    turmaAluno = await responseTurma.json();
+                                }
+                            } catch (e) {
+                                console.warn('Erro ao carregar turma:', e);
+                            }
+                        }
+                        
+                        exibirDadosAluno();
+                    }
+                }
+            }
+        };
+        
+        // Atualizar imediatamente
+        atualizarCurrentUserComInterface();
+        
+        // Atualizar periodicamente
+        intervalIdCurrentUser = setInterval(() => {
+            atualizarCurrentUserComInterface();
+        }, 30000); // Atualizar a cada 30 segundos
     }
     
     // Iniciar polling de notas para atualização em tempo real
@@ -52,85 +151,297 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 // Carregar dados do aluno
-async function carregarDadosAluno() {
+async function carregarDadosAluno(usarCurrentUser = true) {
+    console.log('=== CARREGANDO DADOS DO ALUNO ===');
+    console.log('usarCurrentUser:', usarCurrentUser);
+    
     try {
-        // Tentar usar current user primeiro
-        if (typeof obterCurrentUser === 'function') {
+        // Primeiro, tentar usar dados do localStorage (mais rápido)
+        const usuarioDataStr = localStorage.getItem('usuarioData');
+        if (usuarioDataStr) {
+            try {
+                const usuarioData = JSON.parse(usuarioDataStr);
+                console.log('Dados encontrados no localStorage:', usuarioData);
+                if (usuarioData && usuarioData.id) {
+                    alunoAtual = usuarioData;
+                    console.log('Usando dados do localStorage temporariamente:', alunoAtual);
+                    
+                    // Carregar turma se tiver turmaId (antes de exibir)
+                    if (alunoAtual.turmaId) {
+                        try {
+                            console.log('Carregando turma ID:', alunoAtual.turmaId);
+                            const responseTurma = await fetch(`${window.API_URL}/turmas/${alunoAtual.turmaId}`);
+                            if (responseTurma.ok) {
+                                turmaAluno = await responseTurma.json();
+                                console.log('Turma carregada:', turmaAluno);
+                            } else {
+                                console.warn('Erro ao buscar turma:', responseTurma.status);
+                            }
+                        } catch (e) {
+                            console.warn('Erro ao carregar turma:', e);
+                        }
+                    }
+                    
+                    // Exibir dados imediatamente (com turma já carregada)
+                    exibirDadosAluno();
+                    
+                    // Forçar exibição novamente após um pequeno delay
+                    setTimeout(() => exibirDadosAluno(), 200);
+                    setTimeout(() => exibirDadosAluno(), 500);
+                    
+                    // Carregar notas e calendário
+                    carregarNotas();
+                    carregarCalendario();
+                }
+            } catch (e) {
+                console.error('Erro ao parsear dados do localStorage:', e);
+            }
+        }
+        
+        // Tentar usar current user para atualizar dados
+        if (usarCurrentUser && typeof obterCurrentUser === 'function') {
+            console.log('Tentando obter current user...');
             const currentUser = await obterCurrentUser();
-            if (currentUser) {
+            if (currentUser && currentUser.id) {
                 alunoAtual = currentUser;
+                console.log('Dados do aluno carregados via currentUser:', alunoAtual);
+                
+                // Carregar turma do aluno
+                if (alunoAtual.turmaId) {
+                    try {
+                        const responseTurma = await fetch(`${window.API_URL}/turmas/${alunoAtual.turmaId}`);
+                        if (responseTurma.ok) {
+                            turmaAluno = await responseTurma.json();
+                            console.log('Turma do aluno carregada:', turmaAluno);
+                        } else {
+                            console.warn('Erro ao buscar turma:', responseTurma.status, responseTurma.statusText);
+                        }
+                    } catch (e) {
+                        console.warn('Erro ao carregar turma:', e);
+                    }
+                } else {
+                    console.warn('Aluno não possui turmaId');
+                }
+                
+                exibirDadosAluno();
+                carregarNotas();
+                carregarCalendario();
+                return;
             }
         }
         
         // Se não conseguiu pelo current user, buscar diretamente
-        if (!alunoAtual) {
-            const alunoId = obterUsuarioId() || '1';
-            const responseAluno = await fetch(`${API_URL}/alunos/${alunoId}`);
-            if (!responseAluno.ok) throw new Error('Erro ao carregar dados do aluno');
-            alunoAtual = await responseAluno.json();
+        const alunoId = obterUsuarioId();
+        if (!alunoId) {
+            throw new Error('ID do aluno não encontrado');
         }
+        
+        console.log('Buscando aluno diretamente com ID:', alunoId);
+        console.log('URL da requisição:', `${window.API_URL}/alunos/${alunoId}`);
+        
+        const responseAluno = await fetch(`${window.API_URL}/alunos/${alunoId}`);
+        console.log('Resposta da API:', responseAluno.status, responseAluno.statusText);
+        
+        if (!responseAluno.ok) {
+            const errorText = await responseAluno.text();
+            console.error('Erro na resposta:', errorText);
+            throw new Error(`Erro ao carregar dados do aluno: ${responseAluno.status} ${responseAluno.statusText}`);
+        }
+        
+        alunoAtual = await responseAluno.json();
+        console.log('Dados do aluno carregados diretamente:', alunoAtual);
+        
+        if (!alunoAtual || !alunoAtual.id) {
+            throw new Error('Dados do aluno inválidos');
+        }
+        
+        // Atualizar localStorage com dados atualizados
+        localStorage.setItem('usuarioData', JSON.stringify(alunoAtual));
         
         // Carregar turma do aluno
         if (alunoAtual.turmaId) {
-            const responseTurma = await fetch(`${API_URL}/turmas/${alunoAtual.turmaId}`);
-            if (responseTurma.ok) {
-                turmaAluno = await responseTurma.json();
+            try {
+                            const responseTurma = await fetch(`${window.API_URL}/turmas/${alunoAtual.turmaId}`);
+                if (responseTurma.ok) {
+                    turmaAluno = await responseTurma.json();
+                    console.log('Turma do aluno carregada:', turmaAluno);
+                } else {
+                    console.warn('Erro ao buscar turma:', responseTurma.status, responseTurma.statusText);
+                }
+            } catch (e) {
+                console.warn('Erro ao carregar turma:', e);
             }
+        } else {
+            console.warn('Aluno não possui turmaId');
         }
         
         exibirDadosAluno();
         carregarNotas();
         carregarCalendario();
     } catch (error) {
-        console.error('Erro:', error);
-        // Fallback para dados simulados
-        alunoAtual = {
-            id: "1",
-            nome: "João Silva",
-            matricula: "AL001",
-            turmaId: "1",
-            dataNascimento: "2010-05-15",
-            responsavel: "Ana Silva",
-            telefone: "(31) 99876-5432"
-        };
-        turmaAluno = {
-            id: "1",
-            nome: "1º Ano A",
-            serie: "1",
-            turno: "Manhã",
-            anoLetivo: "2025"
-        };
-        exibirDadosAluno();
-        carregarNotas();
-        carregarCalendario();
+        console.error('Erro ao carregar dados do aluno:', error);
+        
+        // Tentar usar dados do localStorage como fallback
+        const usuarioData = localStorage.getItem('usuarioData');
+        if (usuarioData) {
+            try {
+                alunoAtual = JSON.parse(usuarioData);
+                if (alunoAtual && alunoAtual.id) {
+                    console.log('Usando dados do localStorage como fallback:', alunoAtual);
+                    // Tentar carregar turma
+                    if (alunoAtual.turmaId) {
+                        try {
+                            const responseTurma = await fetch(`${window.API_URL}/turmas/${alunoAtual.turmaId}`);
+                            if (responseTurma.ok) {
+                                turmaAluno = await responseTurma.json();
+                            }
+                        } catch (e) {
+                            console.warn('Erro ao carregar turma:', e);
+                        }
+                    }
+                    exibirDadosAluno();
+                    carregarNotas();
+                    carregarCalendario();
+                    return;
+                }
+            } catch (e) {
+                console.error('Erro ao parsear dados do localStorage:', e);
+            }
+        }
+        
+        // Último fallback: redirecionar para login
+        console.error('Não foi possível carregar dados do aluno. Redirecionando para login...');
+        if (typeof redirecionarSeNaoAutenticado === 'function') {
+            redirecionarSeNaoAutenticado('aluno');
+        } else {
+            window.location.href = '../../login.html';
+        }
     }
 }
 
 // Exibir dados do aluno
 function exibirDadosAluno() {
-    if (!alunoAtual) return;
+    console.log('=== EXIBINDO DADOS DO ALUNO ===');
     
-    document.getElementById('aluno-nome').textContent = alunoAtual.nome;
-    document.getElementById('aluno-matricula').textContent = alunoAtual.matricula;
-    
-    if (turmaAluno) {
-        document.getElementById('aluno-turma').textContent = turmaAluno.nome;
-        document.getElementById('aluno-ano-letivo').textContent = turmaAluno.anoLetivo;
+    if (!alunoAtual) {
+        console.warn('Dados do aluno não disponíveis (alunoAtual é null/undefined)');
+        return;
     }
     
-    if (alunoAtual.dataNascimento) {
-        const data = new Date(alunoAtual.dataNascimento);
-        const dataFormatada = data.toLocaleDateString('pt-BR');
-        document.getElementById('aluno-nascimento').textContent = dataFormatada;
+    console.log('Dados do aluno para exibir:', alunoAtual);
+    console.log('Turma do aluno:', turmaAluno);
+    
+    // Função auxiliar para tentar atualizar os elementos
+    const atualizarElementos = () => {
+        // Garantir que os elementos existam antes de atualizar
+        const nomeEl = document.getElementById('aluno-nome');
+        const matriculaEl = document.getElementById('aluno-matricula');
+        const turmaEl = document.getElementById('aluno-turma');
+        const anoLetivoEl = document.getElementById('aluno-ano-letivo');
+        const nascimentoEl = document.getElementById('aluno-nascimento');
+        
+        console.log('Elementos HTML encontrados:', {
+            nomeEl: !!nomeEl,
+            matriculaEl: !!matriculaEl,
+            turmaEl: !!turmaEl,
+            anoLetivoEl: !!anoLetivoEl,
+            nascimentoEl: !!nascimentoEl
+        });
+        
+        if (!nomeEl || !matriculaEl || !turmaEl || !anoLetivoEl || !nascimentoEl) {
+            console.warn('Alguns elementos HTML não foram encontrados, tentando novamente...');
+            return false;
+        }
+        
+        // Atualizar nome
+        const nome = alunoAtual.nome || 'Não informado';
+        nomeEl.textContent = nome;
+        console.log('✓ Nome do aluno definido:', nome);
+        
+        // Atualizar matrícula
+        const matricula = alunoAtual.matricula || '-';
+        matriculaEl.textContent = matricula;
+        console.log('✓ Matrícula do aluno definida:', matricula);
+        
+        // Atualizar turma e ano letivo
+        if (turmaAluno) {
+            const turmaNome = turmaAluno.nome || '-';
+            turmaEl.textContent = turmaNome;
+            console.log('✓ Turma do aluno definida:', turmaNome);
+            
+            const anoLetivo = turmaAluno.anoLetivo || '-';
+            anoLetivoEl.textContent = anoLetivo;
+            console.log('✓ Ano letivo definido:', anoLetivo);
+        } else {
+            turmaEl.textContent = '-';
+            anoLetivoEl.textContent = '-';
+            console.warn('⚠ Turma não carregada para o aluno');
+        }
+        
+        // Atualizar data de nascimento
+        if (alunoAtual.dataNascimento) {
+            try {
+                const data = new Date(alunoAtual.dataNascimento);
+                if (!isNaN(data.getTime())) {
+                    const dataFormatada = data.toLocaleDateString('pt-BR');
+                    nascimentoEl.textContent = dataFormatada;
+                    console.log('✓ Data de nascimento formatada:', dataFormatada);
+                } else {
+                    nascimentoEl.textContent = alunoAtual.dataNascimento;
+                    console.log('✓ Data de nascimento (formato original):', alunoAtual.dataNascimento);
+                }
+            } catch (e) {
+                console.warn('Erro ao formatar data de nascimento:', e);
+                nascimentoEl.textContent = alunoAtual.dataNascimento || '-';
+            }
+        } else {
+            nascimentoEl.textContent = '-';
+            console.warn('⚠ Data de nascimento não disponível');
+        }
+        
+        console.log('=== DADOS DO ALUNO EXIBIDOS COM SUCESSO ===');
+        console.log('Resumo:', {
+            nome: alunoAtual.nome,
+            matricula: alunoAtual.matricula,
+            turma: turmaAluno?.nome,
+            anoLetivo: turmaAluno?.anoLetivo,
+            dataNascimento: alunoAtual.dataNascimento
+        });
+        
+        return true;
+    };
+    
+    // Tentar atualizar imediatamente
+    if (!atualizarElementos()) {
+        // Se não conseguiu, tentar novamente após um pequeno delay
+        setTimeout(() => {
+            if (!atualizarElementos()) {
+                // Última tentativa após mais tempo
+                setTimeout(() => atualizarElementos(), 500);
+            }
+        }, 100);
     }
 }
 
 // Carregar notas do aluno
 async function carregarNotas(mostrarLoading = true) {
+    console.log('=== CARREGANDO NOTAS DO ALUNO ===');
+    console.log('Aluno ID:', alunoAtual?.id);
+    
     try {
+        if (!alunoAtual || !alunoAtual.id) {
+            console.warn('Aluno não está definido, não é possível carregar notas');
+            return;
+        }
+        
         const loadingEl = document.getElementById('notas-loading');
         const vazioEl = document.getElementById('notas-vazio');
         const containerEl = document.getElementById('notas-container');
+        
+        if (!loadingEl || !vazioEl || !containerEl) {
+            console.error('Elementos de notas não encontrados!');
+            return;
+        }
         
         if (mostrarLoading) {
             loadingEl.style.display = 'block';
@@ -138,24 +449,40 @@ async function carregarNotas(mostrarLoading = true) {
             containerEl.style.display = 'none';
         }
         
-        const response = await fetch(`${API_URL}/notas?alunoId=${alunoAtual.id}`);
-        if (!response.ok) throw new Error('Erro ao carregar notas');
+        const url = `${window.API_URL}/notas?alunoId=${alunoAtual.id}`;
+        console.log('Buscando notas na URL:', url);
+        
+        const response = await fetch(url);
+        console.log('Resposta da API (notas):', response.status, response.statusText);
+        
+        if (!response.ok) {
+            throw new Error(`Erro ao carregar notas: ${response.status} ${response.statusText}`);
+        }
         
         const novasNotas = await response.json();
+        console.log('Notas recebidas:', novasNotas);
         
-        // Verificar se há novas notas
-        const haNovasNotas = JSON.stringify(novasNotas) !== JSON.stringify(todasNotas);
+        // Verificar se é um array
+        if (!Array.isArray(novasNotas)) {
+            console.warn('Resposta não é um array, convertendo...');
+            todasNotas = novasNotas ? [novasNotas] : [];
+        } else {
+            todasNotas = novasNotas;
+        }
         
-        todasNotas = novasNotas;
         ultimaAtualizacaoNotas = new Date().toISOString();
         
-        if (mostrarLoading) {
+        // Sempre esconder loading
+        if (loadingEl) {
             loadingEl.style.display = 'none';
         }
         
         if (todasNotas.length === 0) {
-            vazioEl.style.display = 'block';
+            console.log('Nenhuma nota encontrada');
+            if (vazioEl) vazioEl.style.display = 'block';
+            if (containerEl) containerEl.style.display = 'none';
         } else {
+            console.log('Total de notas:', todasNotas.length);
             // Extrair disciplinas únicas
             disciplinas = [...new Set(todasNotas.map(n => n.disciplina))];
             popularSelectDisciplinas();
@@ -163,17 +490,18 @@ async function carregarNotas(mostrarLoading = true) {
             exibirNotas();
             atualizarGraficos();
             
-            // Mostrar notificação se houver novas notas
-            if (haNovasNotas && !mostrarLoading) {
-                mostrarNotificacaoNotas();
-            }
+            if (vazioEl) vazioEl.style.display = 'none';
+            if (containerEl) containerEl.style.display = 'block';
         }
     } catch (error) {
-        console.error('Erro ao carregar notas:', error);
-        if (mostrarLoading) {
-            document.getElementById('notas-loading').style.display = 'none';
-            document.getElementById('notas-vazio').style.display = 'block';
-        }
+        console.error('❌ Erro ao carregar notas:', error);
+        const loadingEl = document.getElementById('notas-loading');
+        const vazioEl = document.getElementById('notas-vazio');
+        const containerEl = document.getElementById('notas-container');
+        
+        if (loadingEl) loadingEl.style.display = 'none';
+        if (vazioEl) vazioEl.style.display = 'block';
+        if (containerEl) containerEl.style.display = 'none';
     }
 }
 
@@ -658,7 +986,7 @@ function carregarCalendario() {
         return;
     }
     
-    fetch(`${API_URL}/eventos?ativo=true`)
+    fetch(`${window.API_URL}/eventos?ativo=true`)
         .then(response => response.json())
         .then(eventos => {
             const eventosFormatados = eventos.map(evento => ({

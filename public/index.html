@@ -39,15 +39,25 @@
                     <li class="nav-item">
                         <a class="nav-link" href="iniciacao-cientifica.html">INICIAÇÃO CIENTÍFICA</a>
                     </li>
+                    <!-- Link de Cadastro (apenas para admin) -->
+                    <li class="nav-item" id="nav-cadastro" style="display: none;">
+                        <a class="nav-link" href="modulos/administrador/admin.html">
+                            <i class="fas fa-plus-circle me-1"></i>CADASTRO DE EVENTOS
+                        </a>
+                    </li>
+
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="painelDropdown" role="button"
                             data-bs-toggle="dropdown" aria-expanded="false">
                             PAINEL DO USUÁRIO
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="painelDropdown">
-                            <li><a class="dropdown-item" href="admin-login.html"><i class="fas fa-shield-alt me-2"></i>Administrador</a></li>
-                            <li><a class="dropdown-item" href="login.html"><i class="fas fa-chalkboard-teacher me-2"></i>Professor</a></li>
-                            <li><a class="dropdown-item" href="login.html"><i class="fas fa-user-graduate me-2"></i>Aluno</a></li>
+                            <li><a class="dropdown-item" href="admin-login.html"><i
+                                        class="fas fa-shield-alt me-2"></i>Administrador</a></li>
+                            <li><a class="dropdown-item" href="login.html"><i
+                                        class="fas fa-chalkboard-teacher me-2"></i>Professor</a></li>
+                            <li><a class="dropdown-item" href="login.html"><i
+                                        class="fas fa-user-graduate me-2"></i>Aluno</a></li>
                         </ul>
                     </li>
                     <li class="nav-item">
@@ -71,23 +81,28 @@
 
     <main>
 
-        <section id="eventos-destaque" class="py-5" style="background: linear-gradient(135deg, #003366 0%, #084b81 100%);">
+        <section id="eventos-destaque" class="py-5"
+            style="background: linear-gradient(135deg, #003366 0%, #084b81 100%);">
             <div class="container">
-                <h2 class="text-center mb-5 text-white" style="color: white !important; font-size: 2.5rem; font-weight: 700; text-shadow: 2px 2px 4px rgba(0,0,0,0.3);">
+                <h2 class="text-center mb-5 text-white"
+                    style="color: white !important; font-size: 2.5rem; font-weight: 700; text-shadow: 2px 2px 4px rgba(0,0,0,0.3);">
                     <i class="fas fa-calendar-star me-2"></i>Próximos Eventos
                 </h2>
-                <div id="eventosCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel" data-bs-interval="5000">
-                    
+                <div id="eventosCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel"
+                    data-bs-interval="5000">
+
                     <div class="carousel-indicators" id="eventos-carousel-indicators">
-                        </div>
+                    </div>
 
                     <div class="carousel-inner" id="eventos-carousel-inner">
                         <div class="carousel-item active">
-                            <div class="evento-destaque-slide" style="background-image: url('assets/img/placeholder_event.png');">
+                            <div class="evento-destaque-slide"
+                                style="background-image: url('assets/img/placeholder_event.png');">
                                 <div class="evento-destaque-overlay">
                                     <div class="d-flex justify-content-center align-items-center h-100 text-center">
                                         <div>
-                                            <div class="spinner-border text-warning" role="status" style="width: 3rem; height: 3rem;">
+                                            <div class="spinner-border text-warning" role="status"
+                                                style="width: 3rem; height: 3rem;">
                                                 <span class="visually-hidden">Carregando...</span>
                                             </div>
                                             <p class="ms-3 fs-5 text-white mt-3">Carregando eventos...</p>
@@ -98,11 +113,13 @@
                         </div>
                     </div>
 
-                    <button class="carousel-control-prev" type="button" data-bs-target="#eventosCarousel" data-bs-slide="prev">
+                    <button class="carousel-control-prev" type="button" data-bs-target="#eventosCarousel"
+                        data-bs-slide="prev">
                         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                         <span class="visually-hidden">Previous</span>
                     </button>
-                    <button class="carousel-control-next" type="button" data-bs-target="#eventosCarousel" data-bs-slide="next">
+                    <button class="carousel-control-next" type="button" data-bs-target="#eventosCarousel"
+                        data-bs-slide="next">
                         <span class="carousel-control-next-icon" aria-hidden="true"></span>
                         <span class="visually-hidden">Next</span>
                     </button>
@@ -110,7 +127,8 @@
             </div>
         </section>
         <section id="m_v_v" class="container py-5" style="background-color: #f7f7f7;">
-            <h2 class="text-center mb-5" style="color: #003366; font-size: 2.5rem; font-weight: 700;">Missão, Visão e Valores</h2>
+            <h2 class="text-center mb-5" style="color: #003366; font-size: 2.5rem; font-weight: 700;">Missão, Visão e
+                Valores</h2>
 
             <div class="row g-4">
                 <div class="col-md-4">
@@ -453,6 +471,42 @@
             </div>
         </section>
 
+        <!-- Seção 2: Cards de Eventos com Pesquisa e Favoritos -->
+        <section id="eventos" class="container py-5" style="background-color: #f7f7f7;">
+            <div class="row mb-4">
+                <div class="col-12">
+                    <h2 class="text-center mb-4">Todos os Eventos</h2>
+                    <p class="text-center text-muted mb-4">Explore todos os eventos disponíveis</p>
+
+                    <!-- Campo de Pesquisa -->
+                    <div class="row justify-content-center mb-4">
+                        <div class="col-md-6">
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-search"></i></span>
+                                <input type="text" class="form-control" id="pesquisa-eventos"
+                                    placeholder="Pesquisar eventos por título ou descrição..."
+                                    oninput="filtrarEventos()">
+                                <button class="btn btn-outline-secondary" type="button" onclick="limparPesquisa()">
+                                    <i class="fas fa-times"></i> Limpar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Container dos Cards de Eventos -->
+            <div class="row eventos-cards" id="eventos-container">
+                <!-- Os eventos serão carregados aqui pelo JavaScript -->
+                <div class="col-12 text-center py-5">
+                    <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;">
+                        <span class="visually-hidden">Carregando eventos...</span>
+                    </div>
+                    <p class="text-muted mt-3">Carregando eventos...</p>
+                </div>
+            </div>
+        </section>
+
         <section id="ce" class="calendario container py-5">
             <h2 class="text-center mb-4">Calendário Escolar</h2>
             <p class="text-center text-muted mb-4">Confira as datas dos nossos eventos escolares</p>
@@ -515,6 +569,64 @@
                 </div>
             </div>
         </section>
+
+        <!-- Seção 4: Informações do Autor -->
+        <section id="sobre-autor" class="container py-5" style="background-color: #f7f7f7;">
+            <h2 class="text-center mb-5">Sobre o Autor</h2>
+            <div class="row justify-content-center">
+                <div class="col-md-8">
+                    <div class="card shadow-lg p-4">
+                        <div class="row align-items-center">
+                            <div class="col-md-4 text-center mb-3 mb-md-0">
+                                <img src="assets/img/img_autor.jpeg" alt="Foto do Autor"
+                                    class="img-fluid rounded-circle"
+                                    style="width: 200px; height: 200px; object-fit: cover; border: 5px solid #003366;">
+                            </div>
+                            <div class="col-md-8">
+                                <h3 class="text-primary">Ítalo Eduardo Carneiro da Silva</h3>
+                                <p class="text-muted mb-3">
+                                    <i class="fas fa-graduation-cap me-2"></i>
+                                    <strong>Curso:</strong> Engenharia de Software | <strong>Turma:</strong> 1° périodo
+                                    noite
+                                </p>
+                                <p class="mb-3">
+                                    <strong>Minibio:</strong><br>
+                                    Meu nome é Italo Eduardo, tenho 19 anos e atualmente sou estudante do primeiro
+                                    período do curso de Engenharia de Software na PUC Minas. Tenho paixão por
+                                    tecnologia, inovação e automação, áreas onde venho construindo minha jornada
+                                    profissional desde cedo. Gosto de sempre estar buscando desenvolver soluções
+                                    inteligentes que facilitem processos, aumentem a eficiência e tragam impacto real
+                                    para o dia a dia das pessoas.
+
+                                    Além disso, sou entusiasta de hardware, programação e projetos de automação
+                                    industrial, áreas nas quais já tive contato por meio de cursos técnicos e
+                                    experiências práticas. No meu tempo livre, gosto de estudar, jogar videogame, e
+                                    viajar quando possível, mantendo sempre um equilíbrio entre crescimento profissional
+                                    e momentos de lazer.
+
+                                    Estou constantemente buscando novos desafios, oportunidades de aprendizado e formas
+                                    de evoluir tanto na parte técnica quanto pessoal. Meu objetivo é continuar
+                                    aprimorando minhas habilidades para me tornar um profissional completo na área de
+                                    tecnologia e construir uma carreira sólida e inovadora.
+                                </p>
+                                <div class="mt-4">
+                                    <h5 class="mb-3">Redes Sociais:</h5>
+                                    <a href="https://github.com/italocnr" class="me-3 text-dark" title="GitHub" target="_blank">
+                                        <i class="fab fa-github fa-2x"></i>
+                                    </a>
+                                    <a href="https://www.linkedin.com/in/italocnr" class="me-3 text-primary" title="LinkedIn" target="_blank">
+                                        <i class="fab fa-linkedin fa-2x"></i>
+                                    </a>
+                                    <a href="https://www.instagram.com/italo_cnr/" class="me-3 text-danger" title="Instagram" target="_blank">
+                                        <i class="fab fa-instagram fa-2x"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
     </main>
 
     <footer>
@@ -546,16 +658,16 @@
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/locales/pt-br.global.min.js"></script>
     <script>
         // Aguardar FullCalendar carregar
-        window.addEventListener('load', function() {
+        window.addEventListener('load', function () {
             if (typeof FullCalendar === 'undefined') {
                 console.error('FullCalendar não foi carregado! Tentando URL alternativa...');
                 // Tentar URL alternativa
                 const script = document.createElement('script');
                 script.src = 'https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js';
-                script.onload = function() {
+                script.onload = function () {
                     console.log('FullCalendar carregado via fallback');
                 };
-                script.onerror = function() {
+                script.onerror = function () {
                     console.error('Erro ao carregar FullCalendar do CDN');
                 };
                 document.head.appendChild(script);
@@ -566,6 +678,9 @@
     </script>
     <script src="assets/scripts/app.js"></script>
     <script src="assets/scripts/navbar.js"></script>
+    <script src="assets/scripts/auth.js"></script>
+    <script src="assets/scripts/favoritos.js"></script>
+    <script src="assets/scripts/navbar-dinamico.js"></script>
 
 </body>
 
